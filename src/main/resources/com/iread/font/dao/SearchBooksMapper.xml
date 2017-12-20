@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.SearchBooksMapper">
+<!-- namespace写错：Invalid bound statement (not found): com.iread.font.dao.SearchBooksMapper. -->
+<resultMap type="book" id="book">
+	<id column="bid" property="id" />
+	<result column="bname" property="title"/>
+	<result column="bprice" property="price"/>
+	<result column="bsummary" property="summary"/>
+	<result column="breader" property="reader"/>
+	<result column="bvaluator" property="valuator"/>
+	<result column="bgrade" property="grade"/>
+	<result column="btext" property="text"/>
+	<result column="bcover" property="cover"/>
+	<result column="bnum" property="num"/>
+	<result column="bpayaway" property="payaway"/>
+	<result column="soldout" property="bsoldout"/>
+	<result column="blimit" property="limit"/>
+	
+	<association property="writer" javaType="writer">
+		<id column="wid" property="id"/>
+		<result column="wname" property="name"/>
+		<result column="wnum" property="num"/>
+	</association>
+	<association property="publish" javaType="publish">
+		<id column="pid" property="id"/>
+		<result column="pname" property="name"/>
+		<result column="pnum" property="num"/>
+	</association>
+	<association property="nation" javaType="nation">
+		<id column="nid" property="id"/>
+		<result column="nname" property="name"/>
+	</association>
+	<association property="type" javaType="type">
+		<id column="tid" property="id"/>
+		<result column="tname" property="name"/>
+		<result column="tclid" property="clazz.id"/>
+		<!-- <result/>抛出异常Mapping is missing column attribute for property null -->
+	</association>
+	
+</resultMap>
+
+	<!-- public Book getBooksById(@Param("id")Integer id); -->
+	<select id="getBooksById" resultMap="book" parameterType="java.lang.Integer">
+		select
+			b.b_id as bid,
+			b.b_name as bname,
+			b.w_id as bwid,
+			b.p_id as bpid,
+			b.n_id as bnid,
+			b.b_price as bprice,
+			b.b_summary as bsummary,
+			b.b_reader as breader,
+			b.b_valuator as bvaluator,
+			b.b_grade as bgrade,
+			b.b_text as btext,
+			b.b_cover as bcover,
+			b.t_id as btid,
+			b.b_num as bnum,
+			b.b_payaway as bpayaway,
+			b.b_soldout as bsoldout,
+			b.b_limit as blimit,
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			p.p_id as pid,
+			p.p_name as pname,
+			p.p_num as pnum,
+			n.n_id as nid,
+			n.n_name as nname,
+			t.t_id as tid,
+			t.t_name as tname,
+			t.cl_id as tclid
+			<!--cl.cl_id as clid,
+			cl.cl_name as clname -->
+		from books b 
+			inner join writer w on b.w_id = w.w_id
+			inner join publish p on b.p_id = p.p_id
+			inner join nation n on b.n_id = n.n_id
+			inner join type t on b.t_id = t.t_id
+		where b.b_id = #{id}
+	</select>
+	
+	<!-- public List<Book> getBooksByTitle(@Param("title")String title); -->
+	<select id="getBooksByTitle" resultMap="book" parameterType="java.lang.String">
+		select
+			b.b_id as bid,
+			b.b_name as bname,
+			b.w_id as bwid,
+			b.p_id as bpid,
+			b.n_id as bnid,
+			b.b_price as bprice,
+			b.b_summary as bsummary,
+			b.b_reader as breader,
+			b.b_valuator as bvaluator,
+			b.b_grade as bgrade,
+			b.b_text as btext,
+			b.b_cover as bcover,
+			b.t_id as btid,
+			b.b_num as bnum,
+			b.b_payaway as bpayaway,
+			b.b_soldout as bsoldout,
+			b.b_limit as blimit,
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			p.p_id as pid,
+			p.p_name as pname,
+			p.p_num as pnum,
+			n.n_id as nid,
+			n.n_name as nname,
+			t.t_id as tid,
+			t.t_name as tname,
+			t.cl_id as tclid
+			<!--cl.cl_id as clid,
+			cl.cl_name as clname -->
+		from books b 
+			inner join writer w on b.w_id = w.w_id
+			inner join publish p on b.p_id = p.p_id
+			inner join nation n on b.n_id = n.n_id
+			inner join type t on b.t_id = t.t_id
+		where b.b_name = #{title}
+	</select>
+	
+	<!-- public List<Book> getBooksByIds(@Param("ids")List<Integer> ids); -->
+	<select id="getBooksByIds" resultMap="book">
+		select
+			b.b_id as bid,
+			b.b_name as bname,
+			b.w_id as bwid,
+			b.p_id as bpid,
+			b.n_id as bnid,
+			b.b_price as bprice,
+			b.b_summary as bsummary,
+			b.b_reader as breader,
+			b.b_valuator as bvaluator,
+			b.b_grade as bgrade,
+			b.b_text as btext,
+			b.b_cover as bcover,
+			b.t_id as btid,
+			b.b_num as bnum,
+			b.b_payaway as bpayaway,
+			b.b_soldout as bsoldout,
+			b.b_limit as blimit,
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			p.p_id as pid,
+			p.p_name as pname,
+			p.p_num as pnum,
+			n.n_id as nid,
+			n.n_name as nname,
+			t.t_id as tid,
+			t.t_name as tname,
+			t.cl_id as tclid
+			<!--cl.cl_id as clid,
+			cl.cl_name as clname -->
+		from books b 
+			inner join writer w on b.w_id = w.w_id
+			inner join publish p on b.p_id = p.p_id
+			inner join nation n on b.n_id = n.n_id
+			inner join type t on b.t_id = t.t_id
+		where b.b_id in
+		<foreach collection="ids" item="bid" open="(" close=")" separator=",">
+					 #{bid}
+				</foreach>
+	</select>
+	
+	<!-- public List<Book> getBooksByTitle(@Param("title")String title); -->
+	<!-- <select id="getBooksByTitle" parameterType="java.lang.String"></select> -->
+	
+	<!-- public List<Book> getBooksByWriter(@Param("writer")Writer writer); -->
+	<!-- <select id="getBooksByWriter" parameterType="com.iread.beans.domain.Writer"></select> -->
+	
+	<!-- public List<Book> getBooksByPublish(@Param("publish")Publish publish); -->
+	<!-- <select id="getBooksByPublish" parameterType="com.iread.beans.domain.Publish"></select> -->
+	
+	<!-- public List<Book> getBooksByType(@Param("type")Type type); -->
+	<!-- <select id="getBooksByType" parameterType="com.iread.beans.domain.Type"></select> -->
+	
+	<!-- public List<Book> getBooksByClass(@Param("clazz")Class clazz); -->
+	<!-- <select id="getBooksByClass" parameterType="com.iread.beans.domain.Class"></select> -->
+	
+	<!-- public List<Book> getBooks(@Param("book")Book book); -->
+	<select id="getBooks"  resultMap="book" parameterType="com.iread.beans.domain.Book">
+		select
+			b.b_id as bid,
+			b.b_name as bname,
+			b.w_id as bwid,
+			b.p_id as bpid,
+			b.n_id as bnid,
+			b.b_price as bprice,
+			b.b_summary as bsummary,
+			b.b_reader as breader,
+			b.b_valuator as bvaluator,
+			b.b_grade as bgrade,
+			b.b_text as btext,
+			b.b_cover as bcover,
+			b.t_id as btid,
+			b.b_num as bnum,
+			b.b_payaway as bpayaway,
+			b.b_soldout as bsoldout,
+			b.b_limit as blimit,
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			p.p_id as pid,
+			p.p_name as pname,
+			p.p_num as pnum,
+			n.n_id as nid,
+			n.n_name as nname,
+			t.t_id as tid,
+			t.t_name as tname,
+			t.cl_id as tclid
+			<!--cl.cl_id as clid,
+			cl.cl_name as clname -->
+		from books b 
+			inner join writer w on b.w_id = w.w_id
+			inner join publish p on b.p_id = p.p_id
+			inner join nation n on b.n_id = n.n_id
+			inner join type t on b.t_id = t.t_id
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="book.id !=0 and book.id != null and book.id != '' ">
+				b.b_id = #{book.id}
+			</if>
+			<if test="book.title !=null and book.title != '' ">
+				AND b.b_name = #{book.title}
+			</if>
+			<if test="book.writer !=null and book.writer.name != null and book.writer.name != ''">
+				AND (b.w_id = #{book.writer.id} OR w.w_name = #{book.writer.name})
+				<!-- 
+				nested exception is org.apache.ibatis.binding.BindingException: 
+				Parameter 'writer' not found. Available parameters are [book, param1]
+				 -->
+			</if>
+			<if test="book.publish !=null and book.publish.name != null and book.publish.name != ''">
+				AND (b.p_id = #{book.publish.id} OR p.p_name = #{book.publish.name})
+			</if>
+			<if test="book.type !=null and book.type.name != null and book.type.name != ''">
+				AND (b.t_id = #{book.type.id} OR t.t_name = #{book.type.name})
+			</if>
+			<!-- <if test="book.clazz !=null and book.clazz != '' ">
+				AND b.cl_id = #{clazz.id}
+			</if> -->
+		</trim>
+	</select>
+ 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

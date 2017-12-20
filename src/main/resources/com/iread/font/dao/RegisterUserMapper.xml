@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.RegisterUserMapper">
+	
+	<!-- public Boolean regisetUser(User u); -->
+	<insert id="regisetUser" parameterType="com.iread.beans.domain.User" useGeneratedKeys="true" keyProperty="id">
+		insert into user (u_name,u_pass,u_email,u_phone) value(#{name},#{pass},#{email},#{phone})
+	</insert>
+	
+	<!-- public Integer regisetInfo(UserInfomations info); -->
+	<insert id="regisetInfo" parameterType="UserInfomations" >
+		  insert into info(i_id,i_nickname,i_image,i_gender,i_aboutme,iden_id) 
+		  value(#{id},#{nickName},#{imageUri},#{gender},#{aboutMe},#{iden.id})
+	</insert>
+	
+</mapper>

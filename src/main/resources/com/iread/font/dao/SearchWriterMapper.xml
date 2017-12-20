@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.SearchWriterMapper">
+
+	<!-- public List<Integer> getWriterIds(String wName); -->
+	<select id="getWriterIds" resultType="int">
+		select w_id from writer where w_name = #{wName}
+	</select>
+</mapper>

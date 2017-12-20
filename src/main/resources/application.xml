@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context   
+     http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+     http://www.springframework.org/schema/aop   
+     http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+     http://www.springframework.org/schema/tx  
+     http://www.springframework.org/schema/tx/spring-tx-4.3.xsd" >
+			
+			<!-- 导入配置文件mysql.properties；编码格式为utf-8；只导入配置文件里的信息 -->
+			<!-- 方法一： -->
+			<context:property-placeholder location="classpath:c3p0.properties" file-encoding="UTF-8" system-properties-mode="NEVER"/>
+			<!-- 方法二： -->
+			<!-- <bean id="propertyConfigurer2" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+				<property name="location"  value="classpath:c3p0.properties"/>
+			</bean> -->
+			<!-- 方法三 -->
+			<!-- <bean id="propertyConfigurer3" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+				<property name="locations">
+					<list>
+						<value>classpath:c3p0.properties</value>
+					</list>
+				</property>
+			</bean> -->
+			
+			<!-- 配置数据源 -->
+			<!-- c3p0 -->
+			<bean id="dataSource"  class="${mysql.datasource}" destroy-method="close">
+				<property name="driverClass" value="${mysql.driver}"/>
+				<property name="jdbcUrl" value="${mysql.url}"></property>
+				<property name="user" value="${mysql.user:root}"></property>
+				<property name="password" value="${mysql.pass}"></property>
+				<property name="initialPoolSize" value="${mysql.initpoolsize}"></property>
+				<property name="maxPoolSize" value="${mysql.maxsize}"></property>
+				<property name="minPoolSize" value="${mysql.minsize}"></property>
+				<property name="maxIdleTime" value="${mysql.idle}"></property>
+			</bean>
+			
+			<!-- 配置mybatis信息  -->
+			<!-- 创建 SqlSessionFactory，注意是SqlSessionFactory对象不是SqlSessionFactoryBean对象 -->
+			<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+				<property name="dataSource" ref="dataSource" />
+				
+				<!-- 导入mybatis配置文件 -->
+				<property name="configLocation" value="classpath:mysql_mybatis.xml"></property>
+				
+				<!-- 导入映射文件 -->
+				<property name="mapperLocations"  value="classpath:com/iread/font/dao/*Mapper.xml"></property>
+				<!-- 
+					注意：在这里已经导入了mapper文件，不在需要在mybatis-config文件中配置mapper文件；
+					否则：抛出java.lang.IllegalArgumentException: Result Maps collection already contains value for XXX这个错误。
+				 -->
+				
+			</bean>
+			
+			<!-- 导入SqlSession，用于获取mapper -->
+			<!-- <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+				<constructor-arg index="0" ref="sqlSessionFactory" />
+			</bean> -->
+			
+			
+			
+			<!-- 配置mapper接口 -->
+			<!-- <bean id="booksMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+				<property name="mapperInterface" value="com.iread.font.dao.BooksMapper" />
+				<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+				注意：
+					sqlSessionFactory的值要用ref链接；若还用value会抛出异常：
+					 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'books' defined in class path resource [application.xml]: Initialization of bean failed; nested exception is org.springframework.beans.ConversionNotSupportedException: Failed to convert property value of type 'java.lang.String' to required type 'org.apache.ibatis.session.SqlSessionFactory' for property 'sqlSessionFactory'; nested exception is java.lang.IllegalStateException: Cannot convert value of type 'java.lang.String' to required type 'org.apache.ibatis.session.SqlSessionFactory' for property 'sqlSessionFactory': no matching editors or conversion strategy found
+				 
+			</bean>  -->
+			
+			<!-- 查找类路径下的映射器并自动将它们创建成MapperFactoryBean -->
+			<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+				<property name="basePackage" value="com.iread.font.dao" />
+			</bean>
+			
+			<!-- 配置事务管理器 -->
+			<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+				<property name="dataSource" ref="dataSource" />
+			</bean>
+			
+			<!-- 事务 -->
+			<tx:advice id="txAdvice" transaction-manager="transactionManager">
+				<tx:attributes>
+					<tx:method name="search*" read-only="true" propagation="SUPPORTS"/>
+				</tx:attributes>
+			</tx:advice>
+			<!-- 切入事务 -->
+			<aop:config>
+				<!-- 切入点：包含用切入的包、类、方法 -->
+				<aop:pointcut expression="execution(* com.iread.font.service.*Service.*(..))" id="txPointCut"/>
+				<!-- 通知者：将通知(事务)和切点结合起来 -->
+				<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+			</aop:config>
+			
+			<!-- 
+			扫描service层的类，要用到@Service;
+			开启context:component-scan就不用开启context:annotation-config
+			-->
+			<!-- <context:component-scan base-package="com.iread.font.service" /> -->
+			
+			<!-- <context:component-scan base-package="com.iread.beans.domain" /> -->
+			
+
+</beans>

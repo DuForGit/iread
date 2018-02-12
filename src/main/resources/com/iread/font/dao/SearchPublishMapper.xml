@@ -4,6 +4,6 @@
 
 	<!--public List<Integer> getIdsByGeneralPublish(@Param("pName")String pName);-->
 	<select id="getIdsByGeneralPublish" resultType="int">
-		select p_id from publish where p_name like  CONCAT('%',#{pName},'%')
+	select b_id from books where p_id in(select p_id from publish where p_name like  CONCAT('%',#{pName},'%'))
 	</select>
 </mapper>

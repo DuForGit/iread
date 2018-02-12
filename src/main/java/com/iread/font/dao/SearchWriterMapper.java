@@ -17,10 +17,12 @@ import org.apache.ibatis.annotations.Param;
 public interface SearchWriterMapper {
 	
 	/**
-	 *根据作者姓名返回作者的ID集合，这是因为有可能作者名字相同
+	 *根据作者姓名返回作者的ID集合(模糊查询)，这是因为有可能作者名字相同
 	 *@param wName 作者姓名
 	 *@return 作者的ID集合（因为有可能有多个姓名相同的作者）
 	 */
 	public List<Integer> getWriterIds(@Param("wName")String wName);
+	
+	public Integer getWriterId(@Param("wName") String wName);
 
 }

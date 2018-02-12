@@ -14,6 +14,14 @@ public class SearchVo {
 	
 	private String types;
 	private String info;
+	private Integer page;
+	
+	public Integer getPage() {
+		return page;
+	}
+	public void setPage(Integer page) {
+		this.page = page;
+	}
 	public String getTypes() {
 		return types;
 	}

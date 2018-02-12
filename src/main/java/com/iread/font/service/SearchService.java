@@ -1,6 +1,7 @@
 package com.iread.font.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public interface SearchService {
 	 * 搜索框的实现方法，根据搜索框的下拉列表和输入内容搜索电子书
 	 * @param type 下拉列表类型
 	 * @param info 输入内容
-	 * @return 电子书的集合
+	 * @return 电子书的集合,分页信息
 	 */
-	List<Book> searchBooks(String type,String info);
+	/*List<Book>*/ Map<String,Object> searchBooks(String type,String info, int page);
 	
 }

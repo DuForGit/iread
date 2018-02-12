@@ -27,9 +27,9 @@ public interface SearchBooksMapper{
 	public Book getBooksById(@Param("id")Integer id);
 	public List<Book> getBooksByIds(@Param("ids")List<Integer> ids);
 	public List<Book> getBooksByTitle(@Param("title")String title);
+	public List<Book> getBooks(@Param("book")Book book);
 	/*public List<Book> getBooksByWriter(@Param("writer")Writer writer);
 	public List<Book> getBooksByPublish(@Param("publish")Publish publish);
 	public List<Book> getBooksByType(@Param("type")Type type);
 	public List<Book> getBooksByClass(@Param("clazz")Class clazz);*/
-	public List<Book> getBooks(@Param("book")Book book);
 }

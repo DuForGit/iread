@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+    <c:set var="ctp" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE>
 <html>
 <head>
@@ -43,7 +45,46 @@ text-align: center;
 </style>
 </head>
 <body>
-<div id="home" class="container">
+<div id="home" class="container main">
+
+
+<%-- <span class='booksnum' style='color:#aaa; font-size:12px;'>为您找到相关的电子书100本</span>
+<div class="row search" >
+	<div class="col-lg-9 col-md-9">
+	<div class="row">
+		<div  class="col-lg-2 col-md-2" id="bimg"><img src='${ctp}/resources/imgs/books/别输在说话上.jpg' class='img-responsive img-rounded' /></div>
+		<div  class="col-lg-10 col-md-10" id="binfos">
+			<div class='row'><span class='stitle'>无证之罪</span><span class='color'>(湖南人民出版社)</span></div>
+			<div class='row stars'>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star-empty"></span>
+				<span class='color'>3</span>
+				<span class='color'> | </span><span class='color'>397条</span>
+			</div>
+			<div class='row'>
+				<span class='inf'>介绍  </span>
+				<span class='color'>故事发生在繁华都市，凶案现场，罪犯总是故意留下一枚指纹和一张字条—“请来抓我”，...</span>
+			</div>
+			<div class='row'>
+				<span class='inf'>作者</span>
+				<span class='color'>刘慈欣</span>
+			</div>
+			<div class='row'>
+				<div class='col-lg-4 col-md-4 pull-left price' ><b>￥</b><span>28</span></div>
+				<div class='col-lg-2 col-md-2 pull-right'><button class='btn btn-success btn-sm'>详细了解...</button></div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3"></div>
+	
+</div>
+<hr> --%>
+
+
+
 <div class="row">
 <!-- <div class="col-lg-1 col-md-1" style="float:left;"></div> -->
 <div id="caro" class="carousel slide" data-ride="carousel"  style="margin:auto 1px;">

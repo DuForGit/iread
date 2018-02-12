@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.BooksNavMapper">
+
+	<resultMap type="com.iread.beans.domain.Class" id="nav">
+		<id column="clid" property="id"/>
+		<result column="clname" property="name"/>
+		<collection property="types" ofType="com.iread.beans.domain.Type" javaType="ArrayList">
+			<id column="tid" property="id"/>
+			<result column="tname" property="name"/>
+		</collection>
+		<!-- <collection property="types" column="tid"  javaType="ArrayList"
+			ofType="com.iread.beans.domain.Type" resultMap="type" columnPrefix="t">
+			select="booksNavList"
+		</collection>
+		返回的不是Type类型，是Class，而且获取集合types的时候，显示的类型是type，实际却是class
+		 -->
+	</resultMap>
+	
+	<!-- <resultMap type="com.iread.beans.domain.Type" id="type">
+		<id column="tid" property="id"/>
+		<result column="tname" property="name"/>
+	</resultMap> -->
+
+	<!-- 返回books页面的菜单栏
+	public List<com.iread.beans.domain.Class> booksNavList(); -->
+	<select id="booksNavList" resultMap="nav" useCache="true">
+		select 
+			c.cl_id as clid, 
+			cl_name as clname,
+			t.t_id as tid ,
+			t.t_name as tname
+			from class c
+				inner join type t on c.cl_id = t.cl_id;
+	</select>
+</mapper>

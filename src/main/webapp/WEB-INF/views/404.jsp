@@ -20,14 +20,14 @@ body,html{ height:100%; font-family:'微软雅黑'; overflow-y:hidden;}
 
 <body>
 <div class="main">
-   <div class="main_left"><img src="resources/imgs/img2.png" width="229" height="128"/></div>
+   <div class="main_left"><img src=${pageContext.request.contextPath}/resources/imgs/404.png width="229" height="128"/></div>
    <div class="main_right">
       <div class="main_radius">
          <p class="main_p">404错误</p>
          <p class="main_p">您要找的页面不存在,或已被删除！</p>
       </div>
       <div class="text-left" style="margin-top:10%; margin-left:8%;">     
-          <a href="<%=request.getContextPath() %>/" class="button bg-yellow">返回首页</a>
+          <a href=${pageContext.request.contextPath}/ class="button bg-yellow">返回首页</a>
       </div>
    </div>
 </div>

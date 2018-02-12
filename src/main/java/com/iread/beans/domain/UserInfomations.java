@@ -14,7 +14,7 @@ public class UserInfomations {
 	
 	private Integer id;
 	private String nickName;
-	private Long imageUri;
+	private String imageUri;
 	private String gender;
 	private String aboutMe;
 	private UserIdentify iden;
@@ -32,10 +32,10 @@ public class UserInfomations {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public Long getImageUri() {
+	public String getImageUri() {
 		return imageUri;
 	}
-	public void setImageUri(Long imageUri) {
+	public void setImageUri(String imageUri) {
 		this.imageUri = imageUri;
 	}
 	public String getGender() {

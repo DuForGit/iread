@@ -1,5 +1,6 @@
 package com.iread.beans.domain;
 
+import java.util.List;
 
 /**
  *项目名称: iread
@@ -14,6 +15,14 @@ package com.iread.beans.domain;
 public class Class {
 	private Integer id;
 	private String name;
+	private List<Type> types;
+	
+	public List<Type> getTypes() {
+		return types;
+	}
+	public void setTypes(List<Type> types) {
+		this.types = types;
+	}
 	public Integer getId() {
 		return id;
 	}

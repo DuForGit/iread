@@ -16,16 +16,22 @@
 	<result column="bpayaway" property="payaway"/>
 	<result column="soldout" property="bsoldout"/>
 	<result column="blimit" property="limit"/>
+	<result column="bsales" property="sales"/>
 	
 	<association property="writer" javaType="writer">
 		<id column="wid" property="id"/>
 		<result column="wname" property="name"/>
 		<result column="wnum" property="num"/>
+		<result column="wsummary" property="summary"/>
+		<result column="wcover" property="cover"/>
+		<result column="wgender" property="gender"/>
 	</association>
 	<association property="publish" javaType="publish">
 		<id column="pid" property="id"/>
 		<result column="pname" property="name"/>
 		<result column="pnum" property="num"/>
+		<result column="psummary" property="summary"/>
+		<result column="pcover" property="cover"/>
 	</association>
 	<association property="nation" javaType="nation">
 		<id column="nid" property="id"/>
@@ -40,9 +46,8 @@
 	
 </resultMap>
 
-	<!-- public Book getBooksById(@Param("id")Integer id); -->
-	<select id="getBooksById" resultMap="book" parameterType="java.lang.Integer">
-		select
+<sql id="bo">
+select
 			b.b_id as bid,
 			b.b_name as bname,
 			b.w_id as bwid,
@@ -70,100 +75,39 @@
 			n.n_name as nname,
 			t.t_id as tid,
 			t.t_name as tname,
-			t.cl_id as tclid
-			<!--cl.cl_id as clid,
-			cl.cl_name as clname -->
+			t.cl_id as tclid,
+			b.b_sales as bsales,
+			w.w_summary as wsummary,
+			p.p_summary as psummary,
+			p.p_cover as pcover,
+			w.w_cover as wcover,
+			w.w_gender as wgender
 		from books b 
 			inner join writer w on b.w_id = w.w_id
 			inner join publish p on b.p_id = p.p_id
 			inner join nation n on b.n_id = n.n_id
-			inner join type t on b.t_id = t.t_id
+			inner join type t on b.t_id = t.t_id 
+</sql>
+
+	<!-- public Book getBooksById(@Param("id")Integer id); -->
+	<select id="getBooksById" resultMap="book" parameterType="java.lang.Integer">
+		<include refid="bo"/>
 		where b.b_id = #{id}
 	</select>
 	
 	<!-- public List<Book> getBooksByTitle(@Param("title")String title); -->
 	<select id="getBooksByTitle" resultMap="book" parameterType="java.lang.String">
-		select
-			b.b_id as bid,
-			b.b_name as bname,
-			b.w_id as bwid,
-			b.p_id as bpid,
-			b.n_id as bnid,
-			b.b_price as bprice,
-			b.b_summary as bsummary,
-			b.b_reader as breader,
-			b.b_valuator as bvaluator,
-			b.b_grade as bgrade,
-			b.b_text as btext,
-			b.b_cover as bcover,
-			b.t_id as btid,
-			b.b_num as bnum,
-			b.b_payaway as bpayaway,
-			b.b_soldout as bsoldout,
-			b.b_limit as blimit,
-			w.w_id as wid,
-			w.w_name as wname,
-			w.w_num as wnum,
-			p.p_id as pid,
-			p.p_name as pname,
-			p.p_num as pnum,
-			n.n_id as nid,
-			n.n_name as nname,
-			t.t_id as tid,
-			t.t_name as tname,
-			t.cl_id as tclid
-			<!--cl.cl_id as clid,
-			cl.cl_name as clname -->
-		from books b 
-			inner join writer w on b.w_id = w.w_id
-			inner join publish p on b.p_id = p.p_id
-			inner join nation n on b.n_id = n.n_id
-			inner join type t on b.t_id = t.t_id
-		where b.b_name = #{title}
+		<include refid="bo"/>
+		where b.b_name <!-- regexp '[${title}]{2}' -->like CONCAT('%',#{title},'%')
 	</select>
 	
 	<!-- public List<Book> getBooksByIds(@Param("ids")List<Integer> ids); -->
 	<select id="getBooksByIds" resultMap="book">
-		select
-			b.b_id as bid,
-			b.b_name as bname,
-			b.w_id as bwid,
-			b.p_id as bpid,
-			b.n_id as bnid,
-			b.b_price as bprice,
-			b.b_summary as bsummary,
-			b.b_reader as breader,
-			b.b_valuator as bvaluator,
-			b.b_grade as bgrade,
-			b.b_text as btext,
-			b.b_cover as bcover,
-			b.t_id as btid,
-			b.b_num as bnum,
-			b.b_payaway as bpayaway,
-			b.b_soldout as bsoldout,
-			b.b_limit as blimit,
-			w.w_id as wid,
-			w.w_name as wname,
-			w.w_num as wnum,
-			p.p_id as pid,
-			p.p_name as pname,
-			p.p_num as pnum,
-			n.n_id as nid,
-			n.n_name as nname,
-			t.t_id as tid,
-			t.t_name as tname,
-			t.cl_id as tclid
-			<!--cl.cl_id as clid,
-			cl.cl_name as clname -->
-		from books b 
-			inner join writer w on b.w_id = w.w_id
-			inner join publish p on b.p_id = p.p_id
-			inner join nation n on b.n_id = n.n_id
-			inner join type t on b.t_id = t.t_id
-		where b.b_id in
+		<include refid="bo"/>
+		 where b.b_id in 
 		<foreach collection="ids" item="bid" open="(" close=")" separator=",">
 					 #{bid}
-				</foreach>
+		</foreach>
 	</select>
 	
 	<!-- public List<Book> getBooksByTitle(@Param("title")String title); -->
@@ -183,42 +127,7 @@
 	
 	<!-- public List<Book> getBooks(@Param("book")Book book); -->
 	<select id="getBooks"  resultMap="book" parameterType="com.iread.beans.domain.Book">
-		select
-			b.b_id as bid,
-			b.b_name as bname,
-			b.w_id as bwid,
-			b.p_id as bpid,
-			b.n_id as bnid,
-			b.b_price as bprice,
-			b.b_summary as bsummary,
-			b.b_reader as breader,
-			b.b_valuator as bvaluator,
-			b.b_grade as bgrade,
-			b.b_text as btext,
-			b.b_cover as bcover,
-			b.t_id as btid,
-			b.b_num as bnum,
-			b.b_payaway as bpayaway,
-			b.b_soldout as bsoldout,
-			b.b_limit as blimit,
-			w.w_id as wid,
-			w.w_name as wname,
-			w.w_num as wnum,
-			p.p_id as pid,
-			p.p_name as pname,
-			p.p_num as pnum,
-			n.n_id as nid,
-			n.n_name as nname,
-			t.t_id as tid,
-			t.t_name as tname,
-			t.cl_id as tclid
-			<!--cl.cl_id as clid,
-			cl.cl_name as clname -->
-		from books b 
-			inner join writer w on b.w_id = w.w_id
-			inner join publish p on b.p_id = p.p_id
-			inner join nation n on b.n_id = n.n_id
-			inner join type t on b.t_id = t.t_id
+		<include refid="bo"/>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="book.id !=0 and book.id != null and book.id != '' ">
 				b.b_id = #{book.id}

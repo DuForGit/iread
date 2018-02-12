@@ -112,7 +112,7 @@ public class Test {
 		ui.setId(id);
 		ui.setNickName("嘟嘟");
 		ui.setGender("男");
-		ui.setImageUri(1235484L);
+		ui.setImageUri("1235484");
 		UserIdentify uid = new UserIdentify();
 		uid.setId(1);
 		ui.setIden(uid);

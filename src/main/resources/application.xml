@@ -54,6 +54,20 @@
 					注意：在这里已经导入了mapper文件，不在需要在mybatis-config文件中配置mapper文件；
 					否则：抛出java.lang.IllegalArgumentException: Result Maps collection already contains value for XXX这个错误。
 				 -->
+				 
+				 <property name="plugins">
+				 	<array>
+				 		<bean class="com.github.pagehelper.PageInterceptor">
+				 			<property name="properties">
+				 				<value>
+				 					helperDialect=mysql
+				 					reasonable=true
+				 					<!-- supportMethodsArguments=true -->
+				 				</value>
+				 			</property>
+				 		</bean>
+				 	</array>
+				 </property>
 				
 			</bean>
 			
@@ -88,6 +102,7 @@
 			<tx:advice id="txAdvice" transaction-manager="transactionManager">
 				<tx:attributes>
 					<tx:method name="search*" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
 				</tx:attributes>
 			</tx:advice>
 			<!-- 切入事务 -->

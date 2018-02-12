@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import java.util.List;
+import java.util.Map;
 
 import com.iread.beans.domain.Book;
 import com.iread.font.beans.vo.SearchVo;
@@ -31,21 +32,10 @@ public class SearchBooksController {
 	
 	@RequestMapping(value="/search",method = POST)
 	@ResponseBody
-	public List<Book> searchBooks(SearchVo search){
+	public /*List<Book>*/ Map<String,Object> searchBooks(SearchVo search){
 		System.out.println(search.getTypes());
 		System.out.println(search.getInfo());
-		return searchService.searchBooks(search.getTypes(), search.getInfo());
-		/*List<Book> books = new ArrayList<Book>();
-		Book book = new Book();
-		book.setId(1);
-		book.setNum(10);
-		book.setSummary("三体");
-		books.add(book);
-		Book book1 = new Book();
-		book1.setId(2);
-		book1.setNum(20);
-		book1.setSummary("摆渡人");
-		books.add(book1);
-		return books;*/
+		System.out.println(search.getPage());
+		return searchService.searchBooks(search.getTypes(), search.getInfo(), search.getPage());
 		}
 }  

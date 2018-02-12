@@ -22,4 +22,11 @@ public interface SearchTypeMapper {
 	 *@return Type的ID的集合
 	 */
 	public List<Integer> getIdsByGeneralType(@Param("tName")String tName);
+	
+	/**
+	 *返回Class类型的ID，模糊查询
+	 *@param cName 类型名称
+	 *@return book的ID的集合
+	 */
+	public List<Integer> getIdsByGeneralClass(@Param("cName")String cName);
 }

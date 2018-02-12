@@ -4,6 +4,12 @@
 
 	<!-- public List<Integer> getIdsByGeneralType(@Param("tName")String tName); -->
 	<select id="getIdsByGeneralType" resultType="int">
-		select t_id from type where t_name like  CONCAT('%',#{tName},'%')
+		select b_id from books where t_id in (select t_id from type where t_name like  CONCAT('%',#{tName},'%'))	
 	</select>
+	
+	<!-- public List<Integer> getIdsByGeneralClass(@Param("cName")String cName); -->
+	<select id="getIdsByGeneralClass" resultType="int">
+		select b_id from books where t_id in (select t_id from type where cl_id in(select cl_id from class where cl_name like  CONCAT('%',#{cName},'%')))
+	</select>
+	
 </mapper>

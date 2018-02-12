@@ -30,9 +30,8 @@ id="WebApp_ID" version="3.1">
 		<filter-name>encoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	
-   <servlet-mapping>
+
+<!--    <servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.html</url-pattern>
 		<url-pattern>*.js</url-pattern>
@@ -44,8 +43,8 @@ id="WebApp_ID" version="3.1">
 		<url-pattern>*.ttf</url-pattern>
 		<url-pattern>*.woff</url-pattern>
 		<url-pattern>*.woff2</url-pattern>
-	</servlet-mapping>
-
+		<url-pattern>*.map</url-pattern>
+	</servlet-mapping> -->
   
 <servlet>
   	<servlet-name>springMVC</servlet-name>

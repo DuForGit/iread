@@ -2,8 +2,8 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.iread.font.dao.SearchWriterMapper">
 
-	<!-- public List<Integer> getWriterIds(String wName); -->
+	<!-- public Integer getWriterIds(@Param("wName") String wName); -->
 	<select id="getWriterIds" resultType="int">
-		select w_id from writer where w_name = #{wName}
+		select b_id from books where w_id in(select w_id from writer where w_name like CONCAT('%',#{wName},'%'))	
 	</select>
 </mapper>

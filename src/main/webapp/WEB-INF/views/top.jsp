@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <style type="text/css">
 #search{
 width:100%;
@@ -50,9 +51,186 @@ color:#fff;
 a{
 text-align: center;
 }
+
+
+	#binfos .row{
+		margin:5px auto;
+	}
+	.stitle{
+		font-weight: bold;
+		font-size: 25px;
+		font-family: '楷体';
+	}
+	 .stars .glyphicon{  
+            color: orange;  
+            user-select: none;  
+            padding: 0px 1px;  
+            margin:0px;
+        }
+        .color{
+        color:#666;
+        }
+        .b{
+        	color:red;
+        }
+        .price,.inf{
+        	font-size: 16px;
+        	font-weight: bold;
+        }
+        .search{margin-top:10px;}
+        .booksnum{margin:20px auto;}
+		.summary{
+					    overflow: hidden;
+					    text-overflow: ellipsis;
+					    white-space:nowrap;}
+		#page{text-align: center;}
 </style>
 
+<script type="text/javascript">
+<!--
+关于搜索框的处理代码
+//-->
 
+
+
+/* 将book数据进行展示 */
+function showBooks(data){
+	var con = $(".main");
+	var books = data.list;//电子书表单列表
+	var book;//包含电子书的内容
+	var len = books.length;//数据长度
+	var bhtml = "";//列表HTML代码
+	
+	//展示分页栏
+	var total = data.total;//查询的总book数量；不是当前页面的总数，是根据条件查找到的数据库中的总数
+	var pageNum = data.pageNum; //当前页码
+	var pages = data.pages;//总页数
+	var pre = data.pre;//前一页页码
+	var next = data.next;//下一页页码
+	var isFirstPage = data.isFirstPage;//是否为第一页
+	var isLastPage = data.isLastPage;//是否为最后一页
+	var hasPreviousPage = data.hasPreviousPage;//是否有前一页
+	var hasNextPage = data.hasNextPage;//是否有后一页
+	
+	
+	var startPage = "<div class='row' id='page'><ul class='pagination'>";//关于分页按钮的HTML开始位置代码
+	var endPage = "</ul></div>";//关于分页按钮的HTML结束位置代码
+	var pa = "";//分页按钮的HTML代码
+	//var pagediv = $("#page");
+	
+//	if(data != null){alert(books);}
+	if(len > 0){
+		bhtml += "<span class='booksnum' style='color:#aaa; font-size:12px;'>为您找到相关的电子书"+total+"本</span>";
+		for(var i = 0; i < len; i++){
+			book = books[i];
+			
+			bhtml += "<div class='row search' >"
+			+"<div class='col-lg-9 col-md-9'>"
+			+"<div class='row'>"
+			+"<div  class='col-lg-2 col-md-2' id='bimg'>"
+			+"<img src='${ctp}/resources/imgs/books/"+book.cover+"' class='img-responsive img-rounded' /></div>"
+			+"<div  class='col-lg-10 col-md-10' id='binfos'>"
+			+"<div class='row'><span class='stitle'>"+book.title+"</span><span class='color'>("+book.publish.name+")</span></div>"
+			+"<div class='row stars'>";
+			
+			for(var j=0;(j<book.grade) && (book.grade > 0);j++){
+				bhtml += "<span class='glyphicon glyphicon-star'></span>";
+			}
+			bhtml += "<span class='color'>  "+book.grade+"</span><span class='color'>   |   </span><span class='color'>"+book.valuator+"</span></div>";
+			bhtml += "<div class='row summary'><span class='inf'>介绍  </span><span class='color'>"+book.summary+"</span></div>";
+			bhtml += "<div class='row'><span class='inf'>作者  </span><span class='color'>"+book.writer.name+"</span></div>";
+			bhtml += "<div class='row'><div class='col-lg-4 col-md-4 pull-left price'><b class='b'>￥</b><span>"+book.price
+			+"</span></div><div class='col-lg-2 col-md-2 pull-right'><button class='btn btn-success btn-xs'>了解更多...</button></div></div></div></div></div><div class='col-lg-3 col-md-3'></div></div>";
+			if(len > 1){bhtml += "<hr>";}
+		}
+	}
+	
+	
+	if(total > 0 && pages > 1){
+		pa = startPage
+			+ firstPage(isFirstPage,pageNum)
+			+ prePage(hasPreviousPage,pre)
+			+ NumPage(pageNum, pages)
+			+ nextPage(hasNextPage,next)
+			+ lastPage(isLastPage,pages,pageNum)
+			+ endPage;
+			
+	}
+	bhtml += pa;
+	con.html(bhtml);
+}
+
+//包含页码分页按钮
+function NumPage(pageNum, pages){
+	var p = "";
+	if(pages <= 10 && pages > 1){
+		for(var i=1; i<=pages;i++){
+			if(i == pageNum){
+				p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+			}else{
+				p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+			}
+		}
+	}else if(pages > 10){
+		if(pageNum > 5){
+			var start = pageNum-4;
+			var end = pageNum+5 < pages ? pageNum+5:pages;
+			for(var i = start;i <=end;i++){
+				if(i == pageNum){
+					p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				}else{
+					p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				}
+			}
+		}
+	}
+	return p;
+}
+
+var type;
+var inf = "";
+function pagebooks(p){
+	//var uri = "${ctp}/search?types=" + type +"&info="+info + "&page=" + page;
+	$.post("${ctp}/search",{types:type,info:inf,page:p},function(data){
+		showBooks(data);
+	},"json");
+}
+
+//判断和显示前一页按钮
+function prePage(hasPreviousPage,pre){
+	var p = "";//“前一页按钮HTML代码”
+	if(hasPreviousPage == true){
+		p = "<li style='cursor:pointer' onclick='pagebooks("+pre+")'><a>上一页</a></li>";
+	}
+	return p;
+}
+
+//判断和显示后一页按钮
+function nextPage(hasNextPage,next){
+	var p="";//“后一页按钮HTML代码”
+	if(hasNextPage == true){
+		return p = "<li style='cursor:pointer' onclick='pagebooks("+next+")'><a>下一页</a></li>";
+	}
+	return p;
+}
+//判断和显示第一页按钮;isFirstPage:判断是否是第一页;pageNum:大于5显示
+function firstPage(isFirstPage,pageNum){
+	var p = "";//“首页按钮HTML代码”
+	if(isFirstPage == false && pageNum > 5){
+		return p = "<li style='cursor:pointer' onclick='pagebooks("+1+")'><a>首页</a></li>";
+	}
+	return p;
+}
+//判断和显示最后一页按钮;pages:总页数也是最后一页;pageNum:小于pages-5时显示
+function lastPage(isLastPage,pages,pageNum){
+	var p = "";//“尾页按钮HTML代码”
+	if(isLastPage == false && (pageNum < pages - 5)){
+		p = "<li style='cursor:pointer' onclick='pagebooks("+pages+")'><a>尾页</a></li>";
+	}
+	return p;
+}
+
+</script>
 
 <div class="container">
 
@@ -92,11 +270,11 @@ text-align: center;
  <span class="glyphicon glyphicon-th-large"></span>
  <div id="cata_list" style="display:none;" class="dropdown-menu">
  
-  <li style="text-align: center;"><a href="#" >首页</a></li> 
+  <li style="text-align: center;"><a href="/" >首页</a></li> 
  <li class="divider"></li>
- <li style="text-align: center;"><a href="#">个性化</a></li>
+ <li style="text-align: center;"><a href="">个性化</a></li>
  <li class="divider"></li>
-  <li style="text-align: center;"><a href="#">分类</a></li>
+  <li style="text-align: center;"><a href="/books">分类</a></li>
   <li class="divider"></li>
   <li style="text-align: center;"><a href="#">推荐</a></li>
   <li class="divider"></li>
@@ -187,15 +365,18 @@ text-align: center;
 <div class="row" >
 <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12">
 
-<%@include file="common/logo.jsp" %>
+<c:import url="common/logo.jsp"/>
 
 </div>
 <div class="col-md-5 col-lg-5 col-xs-12 col-sm-12">
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#sub").click(function(){
+			type = $("#types").val();
+			inf = $("#inf").val();
+			pagebooks(1);
 			
-			var type = $("#types").val();
+			/* var type = $("#types").val();
 			var info = $("#inf").val();
 			var param = {"types":type,"info":info};
 			$.ajax({
@@ -217,7 +398,7 @@ text-align: center;
 				error:function(data,status){
 	                alert("为空！");
 	         }
-				});
+				}); */
 		});
 	});
 </script>
@@ -269,12 +450,12 @@ $(document).ready(function(){
 </script>
 <div style="height:20px;"></div>
 <ul id="cata" class="nav nav-tabs hidden-xs hidden-sm row" style="border-color: #4CAF50;">
-<a class="btn btn-success">首页</a>
+<a class="btn btn-success" href='${ctp}'/>首页</a>
 <a class="btn btn-success">个性化</a>
-<a class="btn btn-success">分类</a>
-<a class="btn btn-success">推荐</a>
-<a class="btn btn-success">作家</a>
-<a class="btn btn-success">出版社</a>
+<a class="btn btn-success" href="${ctp }/books">分类</a>
+<a class="btn btn-success" href="${ctp }/rank"><!-- 推荐 -->榜单</a>
+<a class="btn btn-success" href="${ctp}/writers">作家</a>
+<a class="btn btn-success" href="${ctp}/publishs">出版社</a>
 <a class="btn btn-success pull-right">
 <span class="glyphicon glyphicon-book"></span>&nbsp书架</a>
 </ul>
@@ -287,3 +468,30 @@ $(document).ready(function(){
 <!-- 登录/注册模板 -->
 
 </div>
+
+<%-- <div class="row" id="search">
+	<div class="col-lg-9 col-md-9">
+	<div class="row">
+		<div  class="col-lg-2 col-md-2" id="bimg"><img src='${ctp}/resources/imgs/books/别输在说话上.jpg' class='img-responsive img-rounded' /></div>
+		<div  class="col-lg-10 col-md-10" id="binfos">
+			<div class='row'><span class='stitle'>无证之罪</span><span>(湖南人民出版社)</span></div>
+			<div class='row stars'>
+				<span class="glyphicon glyphicon-star-empty"></span>
+				<span>3</span>
+				<span class='color'> | </span><span>397条</span>
+			</div>
+			<div class='row'>
+				<span class='inf'>介绍</span>
+				<span class='color'>本书故事发生在繁华都市，凶案现场，罪犯总是故意留下一枚指纹和一张字条——“请来抓我”，除此之外，...</span>
+			</div>
+			<div class='row'>
+				<div class='col-lg-4 col-md-4 pull-left price' ><b>￥</b><span>28</span></div>
+				<div class='col-lg-2 col-md-2 pull-right'><button class='btn btn-success btn-xs'>了解更多...</button></div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3"></div>
+</div> --%>
+

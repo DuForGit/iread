@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.WritersListMapper">
+	<resultMap type="writer" id="writer">
+		<id column="wid" property="id"/>
+		<result column="wname" property="name"/>
+		<result column="wnum" property="num"/>
+		<result column="wsummary" property="summary"/>
+		<result column="wcover" property="cover"/>
+		<result column="wgender" property="gender"/>
+		<result column="bsales" property="avgSales"/>
+		<result column="bgrade" property="avgGrade"/>
+	</resultMap>
+	
+	<sql id="wri">
+		select 
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			w.w_summary as wsummary,
+			w.w_cover as wcover,
+			w.w_gender as wgender,
+			(select AVG(b.b_sales) from books b where w.w_id = b.w_id) as bsales,
+			(select AVG(b.b_grade) from books b where w.w_id = b.w_id) as bgrade
+		from writer w 
+			<!-- inner join books b on w.w_id = b.w_id  -->
+	</sql>
+	
+	<sql id="ord">
+		<if test="order == 1">order by w.w_num DESC</if>
+		<if test="order == 2">order by bsales DESC</if>
+		<if test="order == 3">order by bgrade DESC</if>
+		<if test="order == 4">where w.w_gender = '男'</if>
+		<if test="order == 5">where w.w_gender = '女'</if>
+	</sql>
+	
+	<!-- public List<Writer> getWriters(@Param("order") Integer order); -->
+	<select id="getWriters" resultMap="writer">
+		<include refid="wri"/>
+		<include refid="ord"/>
+	</select>
+	
+</mapper>

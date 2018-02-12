@@ -3,16 +3,10 @@ package com.iread.beans.domain;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
-
-import com.iread.beans.domain.Class;
 import com.iread.beans.domain.Nation;
 import com.iread.beans.domain.Publish;
 import com.iread.beans.domain.Type;
 import com.iread.beans.domain.Writer;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  *项目名称: iread
@@ -37,13 +31,30 @@ public class Book {
 	private Integer valuator;//评论者人数
 	private Float grade;//平均评分（数据库为int，改）
 	private Integer text;//正文地址（数据库为String，改）
-	private Integer cover;//封面地址（数据库为String，改）
+	private String cover;//封面地址（数据库为String，改）
 	private Type type;//书籍详细种类
 	//private Class clazz;//书籍类型(可删，因为Type类中以及包含该对象，更改数据库books表)
 	private Integer num;//推荐人数
 	private Date payaway;//上架时间
 	private Date soldout;//下架时间
 	private Integer limit;//试读页数
+	private Integer sales;//销量
+	private Integer search;//搜索量
+	
+	
+	
+	public Integer getSearch() {
+		return search;
+	}
+	public void setSearch(Integer search) {
+		this.search = search;
+	}
+	public Integer getSales() {
+		return sales;
+	}
+	public void setSales(Integer sales) {
+		this.sales = sales;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -110,10 +121,10 @@ public class Book {
 	public void setText(Integer text) {
 		this.text = text;
 	}
-	public Integer getCover() {
+	public String getCover() {
 		return cover;
 	}
-	public void setCover(Integer cover) {
+	public void setCover(String cover) {
 		this.cover = cover;
 	}
 	public Type getType() {

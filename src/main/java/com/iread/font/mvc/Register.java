@@ -2,6 +2,12 @@ package com.iread.font.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.iread.beans.domain.User;
+import com.iread.beans.domain.UserIdentify;
+import com.iread.beans.domain.UserInfomations;
+import com.iread.font.beans.vo.RegisterVo;
+
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -16,11 +22,23 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  */
 @Controller
 public class Register {
+	
 	@RequestMapping(value="/reg",method = GET)
 	public String register(){
 		return "register";
 	}
 	
-	
+	//注册功能
+	@RequestMapping(value="/postUser",method=POST)
+	public String register(RegisterVo reg){
+		System.out.println(reg);
+		return "register";
+	}
+	//信息填写功能
+	@RequestMapping(value="/postInfo",method=POST)
+	public String register(UserInfomations uinfo){
+		
+		return "";
+	}
 	
 }

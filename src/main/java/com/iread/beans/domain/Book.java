@@ -157,6 +157,14 @@ public class Book {
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", writer=" + writer + ", publish=" + publish + ", price="
+				+ price + ", nation=" + nation + ", summary=" + summary + ", reader=" + reader + ", valuator="
+				+ valuator + ", grade=" + grade + ", text=" + text + ", cover=" + cover + ", type=" + type + ", num="
+				+ num + ", payaway=" + payaway + ", soldout=" + soldout + ", limit=" + limit + ", sales=" + sales
+				+ ", search=" + search + "]";
+	}
 	
 	
 	

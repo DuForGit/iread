@@ -107,7 +107,7 @@ function booksShow(data){
 				row = $("<div class='row'>");
 			}
 			
-			row.append("<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo'><img src='${ctp}/resources/imgs/books/" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>");
+			row.append("<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo' href='${ctp}/ebook?id="+book.id+"'><img src='${ctp}/resources/imgs/books/" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>");
 			
 			if(colsize == 5){
 				row.append("</div>");

@@ -62,10 +62,12 @@ text-align: center;
 				if(colsize == 0){
 					row="<div class='row writerslist'>";
 				}
+				var avgsales = 0;
+				if(writer.avgSales != undefined && writer.avgSales != null){avgsales = writer.avgSales;}
 				row = row + "<div class='col-lg-3 col-sm-3' ><div class='infos_div'><div class='row'>"+
-						"<a target='_blank' href='#'><img style='cursor:pointer' src='${ctp}/resources/imgs/authors/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12'></a></div><div class='winfos row'>" + 
+						"<a target='_blank' href='${ctp}/writers/bookofwri?id="+writer.id+"'><img style='cursor:pointer' src='${ctp}/resources/imgs/authors/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12'></a></div><div class='winfos row'>" + 
 						"<span class='col-lg-1 col-sm-1'></span><span class='wname col-lg-4 col-sm-4'>"
-						+ writer.name +"</span><span class='col-lg-2 col-sm-2'></span><span class='icon glyphicon glyphicon-thumbs-up col-lg-4 col-sm-4'>("+writer.num+")</span></div></div></div>";
+						+ writer.name +"</span><span class='col-lg-2 col-sm-2'></span><span class='wname col-lg-5 col-sm-5'>作品销量: "+avgsales+"</span></div></div></div>";
 				if(colsize == 4){
 					row = row + "</div>";
 				}
@@ -270,17 +272,17 @@ text-align: center;
 				
 				<div class="btn-group btn-group-lg">
 					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(0,1));">全部作家</button>
-					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(1,1));">推荐作家<span class="glyphicon glyphicon-arrow-down"></span></button>
+					<!-- <button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(1,1));">推荐作家<span class="glyphicon glyphicon-arrow-down"></span></button> -->
 					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(2,1));">书籍销量<span class="glyphicon glyphicon-arrow-down"></span></button>
-					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(3,1));">作品评分<span class="glyphicon glyphicon-arrow-down"></span></button>
+					<!-- <button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(3,1));">作品评分<span class="glyphicon glyphicon-arrow-down"></span></button> -->
 					<button type="button" class="btn btn-default" onclick="ordergender();">男/女<span class="glyphicon glyphicon-resize-vertical"></span></button>
 				</div>
 				
 			</div>
-			<div id="wshow" class="col-sm-2 col-lg-2 pull-right btn-group btn-group-lg">
+			<!-- <div id="wshow" class="col-sm-2 col-lg-2 pull-right btn-group btn-group-lg">
 				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
 				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></button>
-			</div>
+			</div> -->
 		</div>
 	
 		<!-- 作家列表 -->

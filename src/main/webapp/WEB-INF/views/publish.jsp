@@ -75,10 +75,14 @@ border: thin 1px #666; */
 				if(colsize == 0){
 					row="<div class='row writerslist'>";
 				}
+				var readernum = 0;
+				var saless = 0;
+				if(writer.sales != undefined && writer.sales != null){readernum = writer.sales;}
+				if(writer.readers != undefined && writer.readers != null){saless = writer.readers;}
 				row = row + "<div class='col-lg-3 col-sm-3' ><div class='infos_div'><div class='row'>"+
-						"<a target='_blank' href='#'><img style='cursor:pointer' src='${ctp}/resources/imgs/publishs/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12 pubimg'></a></div><div class='row w_name'>"+writer.name+"</div><div class='winfos row'>" + 
-						"<span class='col-lg-1 col-sm-1'></span><span class='wname col-lg-4 col-sm-4'>访问量: "
-						+ writer.visit +"</span><span class='col-lg-2 col-sm-2'></span><span class='icon glyphicon glyphicon-thumbs-up col-lg-4 col-sm-4'>("+writer.num+")</span></div></div></div>";
+						"<a target='_blank' href='${ctp}/publishs/bookofpub?id="+writer.id+"'><img style='cursor:pointer' src='${ctp}/resources/imgs/publishs/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12 pubimg'></a></div><div class='row w_name'>"+writer.name+"</div><div class='winfos row'>" + 
+						"<span class='col-lg-1 col-sm-1'></span><span class='wname col-lg-4 col-sm-4'>销量: "
+						+ readernum +"</span><span class='col-lg-2 col-sm-2'></span><span class='wname col-lg-4 col-sm-4'>阅读量: "+saless+"</span></div></div></div>";
 				if(colsize == 4){
 					row = row + "</div>";
 				}
@@ -283,10 +287,10 @@ border: thin 1px #666; */
 				
 				<div class="btn-group btn-group-lg">
 					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(0,1));">全部出版社</button>
-					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(1,1));">推荐人数<span class="glyphicon glyphicon-arrow-down"></span></button>
+					<!-- <button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(1,1));">推荐人数<span class="glyphicon glyphicon-arrow-down"></span></button> -->
 					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(2,1));">销量排行<span class="glyphicon glyphicon-arrow-down"></span></button>
 					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(4,1));">阅读排行<span class="glyphicon glyphicon-arrow-down"></span></button>
-					<button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(3,1));">访问量<span class="glyphicon glyphicon-arrow-down"></span></button>
+					<!-- <button type="button" class="btn btn-default" onclick="getDataByURL(orderWriters(3,1));">访问量<span class="glyphicon glyphicon-arrow-down"></span></button> -->
 				</div>
 				
 			</div>

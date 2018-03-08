@@ -32,6 +32,10 @@ public class UserIdentify {
 	public void setClazz(String clazz) {
 		this.clazz = clazz;
 	}
+	@Override
+	public String toString() {
+		return "UserIdentify [id=" + id + ", type=" + type + ", clazz=" + clazz + "]";
+	}
 
 	
 }

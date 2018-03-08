@@ -35,14 +35,36 @@
 	</bean>
 	
 	
-	<!-- <mvc:default-servlet-handler/>
+	<mvc:default-servlet-handler/>
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*"/>
-			<mvc:exclude-mapping path="*.js"/>
-			<bean></bean>
+			<mvc:mapping path="/reset"/>
+			<bean class="com.iread.font.mvc.interceptor.GenderInfoInterceptor"></bean>
 		</mvc:interceptor>
-	</mvc:interceptors> -->
+		<mvc:interceptor>
+			<!-- <mvc:mapping path="/getpass"/> -->
+			<mvc:mapping path="/my"/>
+			<mvc:mapping path="/myinfos"/>
+			<mvc:mapping path="/set"/>
+			<mvc:mapping path="/reset"/>
+			<mvc:mapping path="/mycart"/>
+			<mvc:mapping path="/mybooks"/>
+			<mvc:mapping path="/addmybook"/>
+			<mvc:mapping path="/addcart"/>
+			<mvc:mapping path="/buy"/>
+			<bean class="com.iread.font.mvc.interceptor.AccessInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/login"/>
+			<bean class="com.iread.font.mvc.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/postUser"/>
+			<bean class="com.iread.font.mvc.interceptor.RegisterInterceptor"/>
+		</mvc:interceptor>
+		
+	</mvc:interceptors>
 	
 	<import resource="classpath:application.xml"/>
 	

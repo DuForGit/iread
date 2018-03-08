@@ -11,5 +11,20 @@ package com.iread.font.beans.vo;
  *
  */
 public class LoginVo {
+	private String name;//包含用户名、邮箱等
+	private String pass;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	
 	
 }

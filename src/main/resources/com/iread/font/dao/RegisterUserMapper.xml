@@ -2,9 +2,10 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.iread.font.dao.RegisterUserMapper">
 	
-	<!-- public Boolean regisetUser(User u); -->
-	<insert id="regisetUser" parameterType="com.iread.beans.domain.User" useGeneratedKeys="true" keyProperty="id">
-		insert into user (u_name,u_pass,u_email,u_phone) value(#{name},#{pass},#{email},#{phone})
+	<!-- public Integer regisetUser(@Param("name") String name, @Param("pass") String pass, @Param("email") String email); -->
+	<!-- public Integer regisetUser(UserPo p); -->
+	<insert id="regisetUser"  parameterType="com.iread.font.beans.po.UserPo" keyProperty="id" useGeneratedKeys="true" >
+		insert into user (u_name,u_pass,u_email) value(#{name},#{pass},#{email})
 	</insert>
 	
 	<!-- public Integer regisetInfo(UserInfomations info); -->

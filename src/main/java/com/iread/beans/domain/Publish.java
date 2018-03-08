@@ -69,6 +69,11 @@ public class Publish {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
+	@Override
+	public String toString() {
+		return "Publish [id=" + id + ", name=" + name + ", num=" + num + ", summary=" + summary + ", cover=" + cover
+				+ ", visit=" + visit + ", sales=" + sales + ", readers=" + readers + "]";
+	}
 	
 	
 	

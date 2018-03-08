@@ -1,7 +1,11 @@
 package com.iread.font.dao;
 
+import org.apache.ibatis.annotations.Param;
+
+
 import com.iread.beans.domain.User;
 import com.iread.beans.domain.UserInfomations;
+import com.iread.font.beans.po.UserPo;
 
 /**
  *项目名称: iread
@@ -16,7 +20,8 @@ import com.iread.beans.domain.UserInfomations;
 public interface RegisterUserMapper {
 	
 	//注册页面的注册操作方法
-	public Integer regisetUser(User u);
+	//public Integer regisetUser(@Param("name") String name, @Param("pass") String pass, @Param("email") String email);
+	public Integer regisetUser(UserPo p);
 	
 	//填写个人信息,
 	public Integer regisetInfo(UserInfomations info);

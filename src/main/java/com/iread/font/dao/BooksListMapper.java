@@ -29,5 +29,12 @@ public interface BooksListMapper {
 	
 	//根据排列方式获取所有电子书的列表
 	public List<Book> getBooks(@Param("ord")Integer ord);
-
+	
+	//更加一组book的ID值获取book列表
+	public List<Book> getBookByIds(@Param("ids")List<Integer> ids);
+	
+	//根据publish名称获取book ID
+	public List<Integer> getBookIdsOfPublish(@Param("pid")int publishId);
+	//根据writer名称获取publish ID
+	public List<Integer> getBookIdsOfWriter(@Param("wid")int writerId);
 }

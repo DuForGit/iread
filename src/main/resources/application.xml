@@ -103,6 +103,11 @@
 				<tx:attributes>
 					<tx:method name="search*" read-only="true" propagation="SUPPORTS"/>
 					<tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="set*" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="login" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="buy*" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="del*" read-only="true" propagation="SUPPORTS"/>
+					<tx:method name="add*" read-only="true" propagation="SUPPORTS"/>
 				</tx:attributes>
 			</tx:advice>
 			<!-- 切入事务 -->

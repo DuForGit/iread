@@ -17,14 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class IndexController {
-	/*存在两个@RequestMapping修饰的方法
-	 org.springframework.beans.factory.BeanCreationException:
-	  Error creating bean with name
-	   'org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping'
-	   : Invocation of init method failed;
-	    nested exception is java.lang.IllegalStateException:
-	     Ambiguous mapping. Cannot map 'searchBooksController' method
-	     */ 
 	@RequestMapping(value={"/index","/"},method=GET)
 	public String index(){
 		return "index";

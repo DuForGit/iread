@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iread.font.dao.UserMapper">
+
+<resultMap type="com.iread.beans.domain.User" id="user">
+	<id column="uid" property="id"/>
+	<result column="uname" property="name"/>
+	<result column="uemail" property="email"/>
+	<association property="infos" javaType="com.iread.beans.domain.UserInfomations">
+		<id column="iid" property="id"/>
+		<result column="inickname" property="nickName"/>
+		<result column="igender" property="gender"/>
+		<result column="iaboutme" property="aboutMe"/>
+	</association>
+	<!-- <association property="identity" javaType="com.iread.beans.domain.UserIdentify">
+		<id column="idenid" property="id"/>
+		<result column="identype" property="type"/>
+		<result column="idenclass" property="clazz"/>
+	</association> -->
+</resultMap>
+<sql id="infos">
+select 
+	u.u_id as uid,u.u_name as uname,u.u_email as uemail,
+	i.i_id as iid, i.i_nickname as inickname,i.i_gender as igender,i.i_aboutme as iaboutme,
+	<!-- id.iden_id as idenid,id.iden_type as identype,id.iden_class as idenclass --> 
+	from user u
+		inner join info i on u.u_id = i.i_id 
+		<!-- inner join identity id on u.u_id = id.iden_id  -->
+	where 
+</sql>
+
+<!-- public Integer getUserByName(@Param("name")String name, @Param("pass")String pass); -->
+<select id="getUserByName"  resultType="java.lang.Integer">
+	select u_id from user where u_name = #{name} and u_pass = #{pass} limit 1;
+</select>
+
+<!-- public Integer getUserByEmail(@Param("email")String email, @Param("pass")String pass); -->
+<select id="getUserByEmail" resultType="java.lang.Integer">
+	select u_id from user where u_email = #{email} and u_pass = #{pass} limit 1;
+</select>
+
+<!-- public int isExistEmail(@Param("email") String name); -->
+<select id="isExistEmail" resultType="java.lang.Integer">
+	select u_id from user where u_email = #{email} limit 1;
+</select>
+
+<!-- public Integer isExistName(@Param("name") String name); -->
+<select id="isExistName" resultType="java.lang.Integer">
+	select u_id from user where u_name = #{name} limit 1;
+</select>
+
+
+<!-- public List<Integer> getBookIdsByUserId(int id); -->
+<select id="getBookIdsByUserId" resultType="java.lang.Integer">
+select b_id from mybooks where u_id = #{id}
+</select>
+
+<resultMap type="order" id="order">
+<id column="oid" property="id"/>
+<result column="odate" property="date"/>
+<result column="oprice" property="price"/>
+<association property="book" javaType="com.iread.beans.domain.OrderBook">
+<id column="bid" property="id"/>
+<result column="bname" property="title"/>
+<result column="bcover" property="cover"/>
+<association property="writer" javaType="com.iread.beans.domain.OrderWriter">
+	<id column="wid" property="id"/>
+	<result column="wname" property="name"/>
+</association>
+<association property="publish" javaType="com.iread.beans.domain.OrderPublish">
+ 	<id column="pid" property="id"/>
+ 	<result column="pname" property="name"/>
+</association>
+</association>
+</resultMap>
+<!-- public List<Order> getOrderBookIdsByUserId(int id); -->
+<select id="getOrderBookIdsByUserId" resultMap="order">
+select 
+	o.o_id as oid,o.o_date as odate,o.o_price as oprice,
+	b.b_id as bid,b.b_name as bname,b.b_cover as bcover,
+	w.w_id as wid,w_name wname,
+	p.p_id as pid,p.p_name as pname
+from orders o, books b, writer w, publish p
+	where 
+	b.w_id = w.w_id and b.p_id = p.p_id and o.b_id = b.b_id and
+	o.u_id = #{id}
+</select>
+
+<!-- public Integer resetPassword(@Param("pass") String pass, @Param("id") int uerId); -->
+<update id="resetPassword">
+update user set u_pass = #{pass} where u_id = #{id}
+</update>
+
+<!-- public void deleteMyBook(int id); -->
+<delete id="deleteMyBook">
+delete from mybooks where my_id = #{id}
+</delete>
+
+<!-- public Integer addMyBook(MyBookDo book); -->
+<insert id="addMyBook" keyProperty="id" useGeneratedKeys="true" parameterType="com.iread.beans.domain.MyBookDo">
+insert into mybooks (u_id,b_id,my_payment,my_point) values (#{userId},#{bookId},#{payment},#{point});
+</insert>
+
+
+<!-- <resultMap type="us" id="us">
+<id column="uid" property="id"/>
+<result column="uname" property="name"/>
+<result column="uemail" property="email"/>
+<association property="infos" javaType="com.iread.beans.domain.UserInfomations">
+<id column="iid" property="id"/>
+<result column="inickname" property="nickName"/>
+<result column="iimage" property="imageUri"/>
+<result column="igender" property="gender"/>
+<result column="iaboutme" property="aboutMe"/>
+</association>
+</resultMap> -->
+<!-- public User getMyAllInfos(@Param("id") int id); -->
+<select id="getMyAllInfos" resultMap="user">
+	select 
+		u.u_id as uid,u.u_name as uname,u.u_email as uemail,
+		i.i_id as iid, i.i_nickname as inickname,i.i_image as iimage,i.i_gender as igender,i.i_aboutme as iaboutme
+		from user u, info i where u.u_id = i.i_id and u.u_id = #{id}
+</select>
+
+<!-- public Integer setMyInfos(UserInfomations userInfos); -->
+<insert id="setMyInfos">
+insert into info (i_id,i_nickname,i_gender,i_aboutme) values (#{id},#{nickName},#{gender},#{aboutMe})
+</insert>
+
+<!-- public Integer changeMyInfos(UserInfomations userInfos); -->
+<update id="changeMyInfos">
+update info set i_nickname = #{nickName},i_gender = #{gender},i_aboutme = #{aboutMe} where i_id = #{id}
+</update>
+<resultMap type="com.iread.beans.domain.RecentReadingBook" id="recent">
+<id column="bid" property="id"/>
+<result column="bname" property="title"/>
+<result column="bcover" property="cover"/>
+</resultMap>
+<!-- public RecentReadingBook getRecentReadingBooks(@Param("id") int id); -->
+<select id="getRecentReadingBooks" resultMap="recent" >
+select b_id as bid,b_name as bname,b_cover as bcover from books where b_id in (select b_id from user_books where u_id = #{id} order by ub_time desc) limit 3;
+</select>
+
+<!-- public Integer InsertRecentReadingBook(@Param("userId") int uid,@Param("bookId") int bid); -->
+<insert id="InsertRecentReadingBook">
+insert into user_books (u_id,b_id) values (#{userId},#{bookId});
+</insert>
+<!-- public Integer hasReading(@Param("userId") int uid,@Param("bookId") int bid); -->
+<select id="hasReading" resultType="int">
+select count(ub_id) from user_books where u_id = #{userId} and b_id = #{bookId}
+</select>
+
+<!-- public void changeReadingTime(int id); -->
+<update id="changeReadingTime">
+update user_books set ub_time = now() where ub_id = #{id}
+</update>
+
+<!-- public List<Integer> BookIdsOfMyCart(@Param("id")int userId); -->
+<select id="BookIdsOfMyCart" resultType="java.lang.Integer">
+select b_id from cart where u_id = #{id}
+</select>
+
+<resultMap type="com.iread.beans.domain.Book" id="carts">
+<id column="bid" property="id"/>
+<result column="bname" property="title"/>
+<result column="bprice" property="price"/>
+<result column="bcover" property="cover"/>
+<association property="writer" javaType="writer">
+<id column="wid" property="id"/>
+<result column="wname" property="name"/>
+</association>
+<association property="publish" javaType="publish"><!-- 不加Javatype会报The error occurred while handling results，空指针异常 -->
+<id column="pid" property="id"/>
+<result column="pname" property="name"/>
+</association>
+</resultMap>
+<!-- public List<Book> getMyCart(@Param("ids")List<Integer> bookIds); -->
+<select id="getMyCart" resultMap="carts">
+select 
+	b.b_id as bid, b.b_name as bname,b.b_price as bprice,b.b_cover as bcover, 
+	w.w_id as wid,w.w_name as wname,p.p_id as pid,p.p_name as pname 
+from books b
+ 	inner join writer w on b.w_id = w.w_id
+	inner join publish p on b.p_id = p.p_id
+	where b.b_id in 
+		<foreach collection="ids" item="bid" open="(" close=")" separator=",">
+					 #{bid}
+		</foreach>
+</select>
+
+<!-- public void addBookToMyCart(@Param("uid")int userId,@Param("bid")int bookId); -->
+<insert id="addBookToMyCart">
+insert into cart (u_id,b_id) values(#{uid},#{bid})
+</insert>
+
+<!-- public int numOfMyCart(@Param("id") int userId); -->
+<select id="numOfMyCart" resultType="int">
+select count(ca_id) from cart where u_id = #{id}
+</select>
+
+<!-- public void deleteMyCart(@Param("id")int cartId); -->
+<delete id="deleteMyCart">
+delete from cart where ca_id = #{id} 
+</delete>
+
+<!-- public Integer isExistInfo(@Param("id") int id); -->
+<select id="isExistInfo" resultType="int">
+select count(i_id) from info where i_id = #{id}
+</select>
+<!-- public int getMybookId(int uId,int bId); -->
+<select id="getMybookId" resultType="int">
+select my_id from mybooks where u_id = #{uid} and b_id = #{bid}
+</select>
+<!-- public int getCartId(@Param("uid") int uid,@Param("bid") int bid); -->
+<select id="getCartId" resultType="int">
+select ca_id from cart where u_id = #{uid} and b_id = #{bid}
+</select>
+
+<!-- public Integer buyBook(@Param("bid")int bid,@Param("uid") int uid); -->
+<update id="buyBook">
+update mybooks set my_payment = 1 where b_id = #{bid} and u_id = #{uid}
+</update>
+<!-- public Integer addBook(@Param("bid")int bid,@Param("uid") int uid); -->
+<insert id="addBook" useGeneratedKeys="true" keyColumn="my_id">
+insert into mybooks (u_id,b_id,my_payment) values(#{uid},#{bid},1)
+</insert>
+<!-- public Integer isBuyBook(@Param("bid")int bid,@Param("uid") int uid); -->
+<select id="isBuyBook" resultType="int">
+select my_payment from mybooks where b_id =#{bid} and u_id = #{uid}
+</select>
+<!-- public void deleteCartBook(@Param("bid")int bid,@Param("uid") int uid); -->
+<delete id="deleteCartBook">
+delete from cart where b_id = #{bid} and u_id = #{uid}
+</delete>
+<!-- public Float getPrice(@Param("bid")int bid); -->
+<select id="getPrice" resultType="float">
+select b_price from books where b_id = #{bid}
+</select>
+<!-- public void addOrder(@Param("bid")int bid,@Param("uid") int uid,@Param("price")int price); -->
+<insert id="addOrder">
+insert into orders (b_id,u_id,o_date,o_price) values (#{bid},#{uid},now(),#{price})
+</insert>
+<!-- public Integer isExistRecentReadingBook(@Param("uid") int uid,@Param("bid") int bid); -->
+<select id="isExistRecentReadingBook" resultType="int">
+select ub_id from user_books where u_id = #{uid} and b_id = #{bid}
+</select>
+
+<!-- public void addOne(@Param("id") int bid); -->
+<update id="addOne">
+update books set b_sales = b_sales + 1 where b_id = #{id}
+</update>
+
+</mapper>

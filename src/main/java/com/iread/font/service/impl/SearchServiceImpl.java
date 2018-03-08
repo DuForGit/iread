@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iread.beans.domain.Book;
+import com.iread.font.dao.BookMapper;
 import com.iread.font.dao.SearchBooksMapper;
 import com.iread.font.dao.SearchPublishMapper;
 import com.iread.font.dao.SearchTypeMapper;
@@ -44,21 +45,31 @@ public class SearchServiceImpl implements SearchService {
 	
 	@Autowired
 	private SearchPublishMapper searchPublishMapper;
-	
+	@Autowired
+	BookMapper bookMapper;
 	
 	/* (non-Javadoc)
 	 * @see com.iread.font.service.SearchService#searchBooks(java.lang.String, java.lang.String)
 	 */
 	public /*List<Book>*/Map<String,Object> searchBooks(String type, String info,int page) {
-		List<Integer> ids;
+		List<Integer> ids = new ArrayList<>();
 		List<Book> bs;
 		if(type.equals(TITLE)){
 			PageUtil.startPage(page);
 			bs = searchBooksMapper.getBooksByTitle(info);
+			if(bs != null && !bs.isEmpty()){
+				for(Book b : bs){
+					ids.add(b.getId());
+				}
+				bookMapper.addSearch(ids);
+			}
+			
 		}else{
 			if(type.equals(TYPE)){
+				PageUtil.startPage(page);
 				ids = searchTypeMapper.getIdsByGeneralType(info);
 				if(ids.isEmpty()){
+					PageUtil.startPage(page);
 					ids = searchTypeMapper.getIdsByGeneralClass(info);
 				}
 			}
@@ -68,9 +79,11 @@ public class SearchServiceImpl implements SearchService {
 				if(id != null){
 							searchBooksMapper.getBooksById(id);
 				}*/
+				PageUtil.startPage(page);
 				ids = searchWriterMapper.getWriterIds(info);
 			}
 			else if(type.equals(PUBLISH)){
+				PageUtil.startPage(page);
 				ids = searchPublishMapper.getIdsByGeneralPublish(info);
 			}else {
 				ids = null;
@@ -81,11 +94,11 @@ public class SearchServiceImpl implements SearchService {
 			bs = !ids.isEmpty() || ids != null ?  searchBooksMapper.getBooksByIds(ids) : null;*/
 			
 			if(ids != null && !ids.isEmpty()){
-				PageUtil.startPage(page);
+				//PageUtil.startPage(page);
 				bs = searchBooksMapper.getBooksByIds(ids);
-				}else{bs = new ArrayList<>();}
-			
-			//System.out.println("ids:" + bs.isEmpty());
+				bookMapper.addSearch(ids);
+				}else{
+					bs = new ArrayList<>();}
 		}
 		return PageUtil.pageInfos(bs);
 	}

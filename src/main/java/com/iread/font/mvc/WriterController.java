@@ -4,10 +4,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.iread.font.service.BooksListService;
 import com.iread.font.service.WriterListService;
 
 /**
@@ -45,4 +48,22 @@ public class WriterController {
 	public String writers(){
 		return "writer";
 	}
+	
+	
+	@RequestMapping("/bookofwri")
+	public String bookOfPublish(int id,Model model){
+		model.addAttribute("id", id);
+		return "bookofwriter";
+	}
+	@Autowired
+	private BooksListService books;
+	
+	@RequestMapping(value="/bookofwriter",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> bookOfPublish(int id,int page){
+		System.out.println("writerId:" + id);
+		return books.searchBooksOfWriter(id, page);
+	}
+	
+	
 }

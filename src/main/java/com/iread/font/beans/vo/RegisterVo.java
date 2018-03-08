@@ -15,6 +15,14 @@ public class RegisterVo {
 	private String name;
 	private String email;
 	private String password;
+	private int code;//验证码
+	
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
 	public String getName() {
 		return name;
 	}
@@ -36,8 +44,9 @@ public class RegisterVo {
 	}
 	@Override
 	public String toString() {
-		return "RegisterVo [name=" + name + ", email=" + email + ", password=" + password + "]";
+		return "RegisterVo [name=" + name + ", email=" + email + ", password=" + password + ", code=" + code + "]";
 	}
+
 	
 	
 	

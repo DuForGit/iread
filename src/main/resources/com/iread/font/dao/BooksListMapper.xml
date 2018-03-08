@@ -116,8 +116,25 @@ select
 		<include refid="book"/>
 		<include refid="ord"/>
 	</select> 
+	
+	<!-- public List<Book> getBookByIds(@Param("ids")int[] ids); -->
+	<select id="getBookByIds" resultMap="books">
+		<include refid="book"/>
+		where b.b_id in 
+		<foreach collection="ids" item="bid" open="(" close=")" separator=",">
+					 #{bid}
+		</foreach>
+	</select>
 
-
+	<!-- public List<Integer> getBookIdsOfPublish(@Param("pid")String publishId); -->
+	<select id="getBookIdsOfPublish" resultType="int">
+	select b_id from books where p_id = #{pid}
+	</select>
+	
+	<!-- public List<Integer> getBookIdsOfWriter(@Param("wid")int writerId); -->
+	<select id="getBookIdsOfWriter" resultType="int">
+		select b_id from books where w_id = #{wid}
+	</select>
 
 
 

@@ -1,12 +1,12 @@
 package com.iread.utils;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.iread.beans.domain.Book;
 
 /**
  *项目名称: iread
@@ -19,7 +19,7 @@ import com.iread.beans.domain.Book;
  *
  */
 public class PageUtil {
-	private static final int PAGE_SIZE = 2;//默认每一页的book数量
+	private static final int PAGE_SIZE = 1;//默认每一页的book数量
 	private PageUtil(){}
 	public static final PageUtil PAGE_UTIL = new PageUtil();
 	

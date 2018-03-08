@@ -14,10 +14,9 @@ public class UserInfomations {
 	
 	private Integer id;
 	private String nickName;
-	private String imageUri;
+	private String imageUri = "default.jpg";
 	private String gender;
 	private String aboutMe;
-	private UserIdentify iden;
 	
 	
 	public Integer getId() {
@@ -50,11 +49,11 @@ public class UserInfomations {
 	public void setAboutMe(String aboutMe) {
 		this.aboutMe = aboutMe;
 	}
-	public UserIdentify getIden() {
-		return iden;
+	@Override
+	public String toString() {
+		return "UserInfomations [id=" + id + ", nickName=" + nickName + ", imageUri=" + imageUri + ", gender=" + gender
+				+ ", aboutMe=" + aboutMe + "]";
 	}
-	public void setIden(UserIdentify iden) {
-		this.iden = iden;
-	}
+	
 	
 }

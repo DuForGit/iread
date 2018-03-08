@@ -4,10 +4,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.iread.font.service.BooksListService;
 import com.iread.font.service.PublishListService;
 
 /**
@@ -26,6 +29,8 @@ public class PublishController {
 	
 	@Autowired
 	private PublishListService ps;
+	@Autowired
+	private BooksListService books;
 	
 	/**
 	 * 
@@ -52,4 +57,17 @@ public class PublishController {
 	public String publishs(){
 		return "publish";
 	}
+	
+	@RequestMapping("/bookofpub")
+	public String bookOfPublish(int id,Model model){
+		model.addAttribute("id", id);
+		return "bookofpublish";
+	}
+	@RequestMapping(value="/bookofpublish",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> bookOfPublish(int id,int page){
+		return books.searchBooksOfPublish(id, page);
+	}
+	
+	
 }

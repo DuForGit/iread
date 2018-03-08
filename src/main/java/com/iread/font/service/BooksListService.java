@@ -30,6 +30,11 @@ public interface BooksListService {
 	//根据排序方式、页数返回所有类型的结果
 	/*List<Book>*/Map<String, Object> getBooks(Integer order, Integer page);
 	
+	//获取某一个publish的所有书籍
+	Map<String,Object> searchBooksOfPublish(int id, int page);
+	//获取某一个writer的所有书籍
+	Map<String,Object> searchBooksOfWriter(int id, int page);
+	
 	
 /**	//根据类型ID和Book表中ID(主键)的数值（该值用于控制查询的开始位置，用于分页）
 	List<Book> getBooksByIdAndPage(Integer id, Integer bookId);

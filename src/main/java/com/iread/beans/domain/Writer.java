@@ -69,6 +69,11 @@ public class Writer {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
+	@Override
+	public String toString() {
+		return "Writer [id=" + id + ", name=" + name + ", num=" + num + ", summary=" + summary + ", cover=" + cover
+				+ ", gender=" + gender + ", avgSales=" + avgSales + ", avgGrade=" + avgGrade + "]";
+	}
 	
 	
 	

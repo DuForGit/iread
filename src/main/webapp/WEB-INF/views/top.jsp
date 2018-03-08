@@ -94,7 +94,7 @@ text-align: center;
 
 
 /* 将book数据进行展示 */
-function showBooks(data){
+function show(data){
 	var con = $(".main");
 	var books = data.list;//电子书表单列表
 	var book;//包含电子书的内容
@@ -140,19 +140,19 @@ function showBooks(data){
 			bhtml += "<div class='row summary'><span class='inf'>介绍  </span><span class='color'>"+book.summary+"</span></div>";
 			bhtml += "<div class='row'><span class='inf'>作者  </span><span class='color'>"+book.writer.name+"</span></div>";
 			bhtml += "<div class='row'><div class='col-lg-4 col-md-4 pull-left price'><b class='b'>￥</b><span>"+book.price
-			+"</span></div><div class='col-lg-2 col-md-2 pull-right'><button class='btn btn-success btn-xs'>了解更多...</button></div></div></div></div></div><div class='col-lg-3 col-md-3'></div></div>";
+			+"</span></div><div class='col-lg-2 col-md-2 pull-right'><a class='btn btn-success btn-xs' href='${ctp}/ebook?id="+book.id+"' target='_blank'>了解更多...</a></div></div></div></div></div><div class='col-lg-3 col-md-3'></div></div>";
 			if(len > 1){bhtml += "<hr>";}
 		}
 	}
 	
 	
-	if(total > 0 && pages > 1){
+ 	if(total > 0 && pages > 1){
 		pa = startPage
-			+ firstPage(isFirstPage,pageNum)
-			+ prePage(hasPreviousPage,pre)
-			+ NumPage(pageNum, pages)
-			+ nextPage(hasNextPage,next)
-			+ lastPage(isLastPage,pages,pageNum)
+			+ firstPag(isFirstPage,pageNum)
+			+ prePag(hasPreviousPage,pre)
+			+ NumPag(pageNum, pages)
+			+ nextPag(hasNextPage,next)
+			+ lastPag(isLastPage,pages,pageNum)
 			+ endPage;
 			
 	}
@@ -161,14 +161,14 @@ function showBooks(data){
 }
 
 //包含页码分页按钮
-function NumPage(pageNum, pages){
+function NumPag(pageNum, pages){
 	var p = "";
 	if(pages <= 10 && pages > 1){
 		for(var i=1; i<=pages;i++){
 			if(i == pageNum){
-				p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				p = p + "<li style='cursor:pointer' class='active' onclick='showThePag("+i+")'><a>"+i+"</a></li>";
 			}else{
-				p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				p = p + "<li style='cursor:pointer' onclick='showThePag("+i+")'><a>"+i+"</a></li>";
 			}
 		}
 	}else if(pages > 10){
@@ -177,55 +177,54 @@ function NumPage(pageNum, pages){
 			var end = pageNum+5 < pages ? pageNum+5:pages;
 			for(var i = start;i <=end;i++){
 				if(i == pageNum){
-					p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+					p = p + "<li style='cursor:pointer' class='active' onclick='showThePag("+i+")'><a>"+i+"</a></li>";
 				}else{
-					p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+					p = p + "<li style='cursor:pointer' onclick='showThePag("+i+")'><a>"+i+"</a></li>";
 				}
 			}
 		}
 	}
 	return p;
 }
-
 var type;
 var inf = "";
-function pagebooks(p){
+function showThePag(p){
 	//var uri = "${ctp}/search?types=" + type +"&info="+info + "&page=" + page;
 	$.post("${ctp}/search",{types:type,info:inf,page:p},function(data){
-		showBooks(data);
+		show(data);
 	},"json");
-}
+} 
 
 //判断和显示前一页按钮
-function prePage(hasPreviousPage,pre){
+function prePag(hasPreviousPage,pre){
 	var p = "";//“前一页按钮HTML代码”
 	if(hasPreviousPage == true){
-		p = "<li style='cursor:pointer' onclick='pagebooks("+pre+")'><a>上一页</a></li>";
+		p = "<li style='cursor:pointer' onclick='showThePag("+pre+")'><a>上一页</a></li>";
 	}
 	return p;
 }
 
 //判断和显示后一页按钮
-function nextPage(hasNextPage,next){
+function nextPag(hasNextPage,next){
 	var p="";//“后一页按钮HTML代码”
 	if(hasNextPage == true){
-		return p = "<li style='cursor:pointer' onclick='pagebooks("+next+")'><a>下一页</a></li>";
+		return p = "<li style='cursor:pointer' onclick='showThePag("+next+")'><a>下一页</a></li>";
 	}
 	return p;
 }
 //判断和显示第一页按钮;isFirstPage:判断是否是第一页;pageNum:大于5显示
-function firstPage(isFirstPage,pageNum){
+function firstPag(isFirstPage,pageNum){
 	var p = "";//“首页按钮HTML代码”
 	if(isFirstPage == false && pageNum > 5){
-		return p = "<li style='cursor:pointer' onclick='pagebooks("+1+")'><a>首页</a></li>";
+		return p = "<li style='cursor:pointer' onclick='showThePag("+1+")'><a>首页</a></li>";
 	}
 	return p;
 }
 //判断和显示最后一页按钮;pages:总页数也是最后一页;pageNum:小于pages-5时显示
-function lastPage(isLastPage,pages,pageNum){
+function lastPag(isLastPage,pages,pageNum){
 	var p = "";//“尾页按钮HTML代码”
 	if(isLastPage == false && (pageNum < pages - 5)){
-		p = "<li style='cursor:pointer' onclick='pagebooks("+pages+")'><a>尾页</a></li>";
+		p = "<li style='cursor:pointer' onclick='showThePag("+pages+")'><a>尾页</a></li>";
 	}
 	return p;
 }
@@ -284,7 +283,7 @@ function lastPage(isLastPage,pages,pageNum){
  
  </div>
  </div>
- <div id="sky" class="col-md-8 col-lg-8 col-xs-8 col-sm-8" >天气预报</div>
+ <div id="sky" class="col-md-8 col-lg-8 col-xs-8 col-sm-8" ><!-- 天气预报 --></div>
  <div id="mobile_info" class="col-xs-2 col-sm-2 hidden-lg hidden-md pull-right">
  <span id="user_info_mob"  class="glyphicon glyphicon-user pull-right"></span>
  
@@ -303,7 +302,6 @@ function lastPage(isLastPage,pages,pageNum){
  </div>
  <!-- 移动端 -->
  
- <div class="col-md-4 col-lg-4 hidden-sm hidden-xs pull-left">
  <script type="text/javascript">
  $(document).ready(function(){
 	 var ps = $("#info").position();
@@ -326,38 +324,46 @@ function lastPage(isLastPage,pages,pageNum){
 	  });
 	});
  </script>
+ <div class="col-md-4 col-lg-4 hidden-sm hidden-xs pull-left">
  
- <a type="button" class="btn btn-link"  data-toggle="modal"  data-target="#login" style="color:#000000">登录/注册</a>
- <span>|</span>
- 
- 
- 
- 
- 
-<!--  <font id="info_wrap" >
+ <c:if test="${not empty sessionScope.userId}">
+<font id="info_wrap" >
  <a type="button" class="btn btn-link" id="info" style="color:#000000">
 <span id="username">个人信息</span> 
 <span id="sign">∨</span> 
  </a>
  <div id="info_list" class="dropdown-menu" style="display:none;">
- <li style="text-align: center;"><a href="#" >个人主页</a></li> 
+ <li style="text-align: center;"><a href="${ctp}/my" >个人主页</a></li> 
  <li class="divider"></li>
- <li style="text-align: center;"><a href="#">设置</a></li>
+ <li style="text-align: center;"><a href="${ctp}/myinfos">我的数据</a></li>
  <li class="divider"></li>
-  <li style="text-align: center;"><a href="#">购物车</a></li>
-  <li class="divider"></li>
-  <li style="text-align: center;"><a href="#">收藏</a></li>
+  <li style="text-align: center;"><a href="${ctp}/mycart">购物车</a></li>
+ <li class="divider"></li>
+  <li style="text-align: center;"><a href="${ctp}/quit">退出</a></li>
+ <!--  <li class="divider"></li>
+  <li style="text-align: center;"><a href="#">收藏</a></li> -->
  </div>
  </font>
- <span>|</span> -->
- 
- 
-<!-- <a type="button" class="btn btn-link navbar-header">登录/注册</a> -->
-<a type="button" class="btn btn-link" style="color:#000000">设置</a>
  <span>|</span>
+ <a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/set">设置</a>
+ <span>|</span>
+ </c:if>
+ 
+ <c:if test="${empty sessionScope.userId}">
+ <a type="button" class="btn btn-link"  data-toggle="modal"  data-target="#login" style="color:#000000">登录</a>
+ <span>|</span>
+<a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/reg">注册</a>
+<span>|</span>
+</c:if>
+<a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/getpass">找回密码</a>
+
+
+<!-- <span>|</span>
+<a type="button" class="btn btn-link" style="color:#000000">设置</a> -->
+<!--  <span>|</span>
 <a type="button" class="btn btn-link" style="color:#000000">反馈</a>
  <span>|</span>
-<a type="button" class="btn btn-link" style="color:#000000">消息</a>
+<a type="button" class="btn btn-link" style="color:#000000">消息</a> -->
  </div>
  </div>
 
@@ -374,7 +380,7 @@ function lastPage(isLastPage,pages,pageNum){
 		$("#sub").click(function(){
 			type = $("#types").val();
 			inf = $("#inf").val();
-			pagebooks(1);
+			showThePag(1);
 			
 			/* var type = $("#types").val();
 			var info = $("#inf").val();
@@ -409,11 +415,11 @@ function lastPage(isLastPage,pages,pageNum){
 <option>作者</option>
 <option>出版社</option>
 </select>
-<input type="text" id="inf" placeholder="白夜追凶" name="info"/>
+<input type="text" id="inf" placeholder="书名/作者/类型/出版社" name="info"/>
 <input type="button" id="sub" value="搜索"/>
 </form>
 
-<div class="hidden-sm hidden-xs " >
+<!-- <div class="hidden-sm hidden-xs " >
 <a  class="text-light" style="color:black;text-decoration:none;cursor:pointer;">三体</a>
 <span>&nbsp&nbsp</span>
 <a class="text-light" style="color:black;text-decoration:none;cursor:pointer;">互联网</a>
@@ -425,7 +431,7 @@ function lastPage(isLastPage,pages,pageNum){
 <a class="text-light" style="color:black;text-decoration:none;cursor:pointer;">追风筝的男孩</a>
 <span>&nbsp&nbsp</span>
 <a class="text-light" style="color:black;text-decoration:none;cursor:pointer;">Java</a>
-</div>
+</div> -->
 </div>
 <div class="col-md-5 col-lg-5"></div>
 </div>
@@ -451,13 +457,13 @@ $(document).ready(function(){
 <div style="height:20px;"></div>
 <ul id="cata" class="nav nav-tabs hidden-xs hidden-sm row" style="border-color: #4CAF50;">
 <a class="btn btn-success" href='${ctp}'/>首页</a>
-<a class="btn btn-success">个性化</a>
+<!-- <a class="btn btn-success">个性化</a> -->
 <a class="btn btn-success" href="${ctp }/books">分类</a>
 <a class="btn btn-success" href="${ctp }/rank"><!-- 推荐 -->榜单</a>
 <a class="btn btn-success" href="${ctp}/writers">作家</a>
 <a class="btn btn-success" href="${ctp}/publishs">出版社</a>
-<a class="btn btn-success pull-right">
-<span class="glyphicon glyphicon-book"></span>&nbsp书架</a>
+<%-- <a class="btn btn-success pull-right" href="${ctp}/mybooks">
+<span class="glyphicon glyphicon-book"></span>&nbsp书架</a> --%>
 </ul>
 <!-- end---目录  -->
 <!-- PC端  -->

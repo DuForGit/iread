@@ -15,6 +15,8 @@ import com.iread.beans.domain.User;
 import com.iread.beans.domain.UserIdentify;
 import com.iread.beans.domain.UserInfomations;
 import com.iread.beans.domain.Writer;
+import com.iread.font.beans.po.UserPo;
+import com.iread.font.beans.vo.RegisterVo;
 import com.iread.font.beans.vo.SearchVo;
 import com.iread.font.dao.RegisterUserMapper;
 import com.iread.font.dao.SearchBooksMapper;
@@ -23,6 +25,7 @@ import com.iread.font.dao.SearchTypeMapper;
 import com.iread.font.dao.SearchWriterMapper;
 import com.iread.font.mvc.SearchBooksController;
 import com.iread.font.service.SearchService;
+import com.iread.font.service.impl.RegisterServiceImpl;
 
 /**
  *项目名称: iread
@@ -99,12 +102,26 @@ public class Test {
 		SearchVo vo = new SearchVo();vo.setInfo("莫言");vo.setTypes("作家");
 		List<Book> books = search.searchBooks(vo);
 		System.out.println(books);*/
-		RegisterUserMapper reg = fileContext.getBean(RegisterUserMapper.class);
-		User u = new User();
+		//RegisterUserMapper.class
+		RegisterServiceImpl reg = fileContext.getBean(RegisterServiceImpl.class);
+		//System.out.println(reg.regisetUser("f", "5586", "6s56d"));
+		UserPo p = new UserPo();
+		RegisterVo v = new RegisterVo();
+		v.setEmail("email");
+		v.setName("name");
+		v.setPassword("pass");
+		int id = reg.register(v);
+		System.out.println(id);
+		/*p.setEmail("email");
+		p.setName("name");
+		p.setPass("pass");
+		System.out.println(reg.regisetUser(p));
+		System.out.println(p.getId());*/
+		/*User u = new User();
 		u.setName("方2");
-		u.setPass("2");
+		
 		u.setEmail("2@qq.com");
-		u.setPhone(2l);
+		
 		System.out.println(reg.regisetUser(u));
 		int id= u.getId();
 		System.out.println(id);
@@ -115,9 +132,8 @@ public class Test {
 		ui.setImageUri("1235484");
 		UserIdentify uid = new UserIdentify();
 		uid.setId(1);
-		ui.setIden(uid);
 		System.out.println(reg.regisetInfo(ui));
-		System.out.println(uid.getId());
+		System.out.println(uid.getId());*/
 		
 	}
 }

@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
 	 * @see com.iread.font.service.UserService#changePass(int, java.lang.String)
 	 */
 	@Override
-	public boolean changePass(int userId, String newPass) {
-		Integer success = user.resetPassword(newPass, userId);
+	public boolean changePass(String email, String newPass) {
+		Integer success = user.resetPassword(newPass, email);
 		if(success != null){
 			return true;
 		}

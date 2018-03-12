@@ -77,10 +77,12 @@ function changeMyInfo(){
 	<div class="panel-body" style="text-align: center;">
 		<div class="row">
 		<c:forEach items="${books}" var="book">
+			<a href="${ctp}/ebook?id=${book.id}" target="_blank">
 			<div class="col-lg-4 col-md-4" style="cursor:pointer">
 				<img width="150" alt="" src="${ctp}/resources/imgs/books/${book.cover}" >
 				<ul class='list-unstyled'><li class='book_name' style="margin-top: 5px;font-family:SimHei;">${book.title }</li></ul>
 			</div>
+			</a>
 		</c:forEach>
 		</div>
     	

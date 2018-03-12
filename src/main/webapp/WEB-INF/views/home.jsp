@@ -2,9 +2,13 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
     <c:set var="ctp" value="${pageContext.request.contextPath}"></c:set>
+   
 <!DOCTYPE>
 <html>
 <head>
+<c:import url="common/viewport.jsp"/>
+<c:import url="common/content_type.jsp"/>
+<c:import url="common/common.jsp"/>
 <style type="text/css">
 .container{
 margin-top: 2px;
@@ -35,55 +39,22 @@ font-size:xx-small;
 .book_name{
 color:#000;
 }
-#hot,#hot a{
+#hot,#hot a,#new,#new a,#sales,#sales a,#orderbook,#cartbook,#bookcase,#orderbook a,#cartbook a,#bookcase a{
 margin-top: 5px;
 }
-#hot h1{
+h1{
 text-align: center;
 }
 
 </style>
 </head>
 <body>
+<%-- <c:out value="bookcase：${empty bookcase}"></c:out>
+<c:out value="cartbook：${empty cartbook}"></c:out>
+<c:out value="orderbook：${empty orderbook}"></c:out> --%>
+<c:import url="top.jsp"/>
+
 <div id="home" class="container main">
-
-
-<%-- <span class='booksnum' style='color:#aaa; font-size:12px;'>为您找到相关的电子书100本</span>
-<div class="row search" >
-	<div class="col-lg-9 col-md-9">
-	<div class="row">
-		<div  class="col-lg-2 col-md-2" id="bimg"><img src='${ctp}/resources/imgs/books/别输在说话上.jpg' class='img-responsive img-rounded' /></div>
-		<div  class="col-lg-10 col-md-10" id="binfos">
-			<div class='row'><span class='stitle'>无证之罪</span><span class='color'>(湖南人民出版社)</span></div>
-			<div class='row stars'>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star-empty"></span>
-				<span class='color'>3</span>
-				<span class='color'> | </span><span class='color'>397条</span>
-			</div>
-			<div class='row'>
-				<span class='inf'>介绍  </span>
-				<span class='color'>故事发生在繁华都市，凶案现场，罪犯总是故意留下一枚指纹和一张字条—“请来抓我”，...</span>
-			</div>
-			<div class='row'>
-				<span class='inf'>作者</span>
-				<span class='color'>刘慈欣</span>
-			</div>
-			<div class='row'>
-				<div class='col-lg-4 col-md-4 pull-left price' ><b>￥</b><span>28</span></div>
-				<div class='col-lg-2 col-md-2 pull-right'><button class='btn btn-success btn-sm'>详细了解...</button></div>
-			</div>
-		</div>
-	</div>
-	</div>
-
-	<div class="col-lg-3 col-md-3"></div>
-	
-</div>
-<hr> --%>
-
-
 
 <div class="row">
 <!-- <div class="col-lg-1 col-md-1" style="float:left;"></div> -->
@@ -119,122 +90,138 @@ text-align: center;
 
 <div id="hot" class="row">
 <h1>热门推荐</h1>
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+<c:forEach items="${hots}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">评分</li>
-				<li class="price_mob">价格</li>
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
 				</ul>
 			</div>
 		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
 	</a>
-	
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
-			</div>
-			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
-			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">简介</li>
-				<li class="price_mob">价格</li>
-				</ul>
-			</div>
-		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
-	</a>
-	
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
-			</div>
-			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
-			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">简介</li>
-				<li class="price_mob">价格</li>
-				</ul>
-			</div>
-		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
-	</a>
-	
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
-			</div>
-			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
-			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">简介</li>
-				<li class="price_mob">价格</li>
-				</ul>
-			</div>
-		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
-	</a>
-	
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
-			</div>
-			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
-			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">简介</li>
-				<li class="price_mob">价格</li>
-				</ul>
-			</div>
-		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
-	</a>
-	
-	<a id=""  class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-xs-4 col-sm-4">
-				<img src="resources/imgs/books/santi.jpg" class="img-responsive"/>
-			</div>
-			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
-			<ul class="list-unstyled">
-				<li class="book_name_mob">三体</li>
-				<li class="writer_mob">作者: 刘培慈</li>
-				<li class="program_mob">简介</li>
-				<li class="price_mob">价格</li>
-				</ul>
-			</div>
-		</div>
-		<div id="" class="row hidden-xs hidden-sm book_name"><span>三体</span></div>
-	</a>
-	
+</c:forEach>	
 </div>
 <div id="new" class="row">
-	<div></div>
+	<h1>新书推荐</h1>
+	<c:forEach items="${news}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+			</div>
+			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
+			<ul class="list-unstyled">
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
+	</a>
+</c:forEach>
 </div>
-<div id="comment" class="row">
-	<div></div>
+
+<c:if test="${not empty bookcase}">
+<div id="bookscase" class="row">
+	<h1>根据你的书架为你推荐以下图书</h1>
+	<c:forEach items="${bookcase}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+			</div>
+			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
+			<ul class="list-unstyled">
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
+	</a>
+</c:forEach>
 </div>
-<div id="writer" class="row">
-	<div></div>
+</c:if>
+
+<c:if test="${not empty cartbook}">
+<div id="cartbook" class="row">
+	<h1>根据你的购物车为你推荐以下图书</h1>
+	<c:forEach items="${cartbook}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+			</div>
+			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
+			<ul class="list-unstyled">
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
+	</a>
+</c:forEach>
 </div>
-<div id="publish" class="row">
-	<div></div>
+</c:if>
+
+
+<c:if test="${not empty orderbook}">
+<div id="orderbook" class="row">
+	<h1>根据你的购买记录为你推荐以下图书</h1>
+	<c:forEach items="${orderbook}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+			</div>
+			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
+			<ul class="list-unstyled">
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
+	</a>
+</c:forEach>
+</div>
+</c:if>
+
+
+<div id="sales" class="row">
+	<h1>热卖中...</h1>
+	<c:forEach items="${sales}" var="bk">
+	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+			</div>
+			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
+			<ul class="list-unstyled">
+				<li class="book_name_mob">${bk.title}</li>
+				<li class="writer_mob">作者: ${bk.writer.name}</li>
+				<li class="price_mob">价格:${bk.price}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
+	</a>
+</c:forEach>
 </div>
 
 </div>
+<c:import url="bottom.jsp"/>
 </body>
 </html>

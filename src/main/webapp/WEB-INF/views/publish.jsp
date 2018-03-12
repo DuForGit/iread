@@ -144,6 +144,14 @@ border: thin 1px #666; */
 						p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
 					}
 				}
+			}else{
+				for(var i = 1;i <=10;i++){
+					if(i == pageNum){
+						p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+					}else{
+						p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+					}
+				}
 			}
 		}
 		return p;

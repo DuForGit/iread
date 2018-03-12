@@ -31,7 +31,7 @@ public class CodeController {
 		String em = h.getParameter("email");
 		session.setAttribute(SessionKey.REGISTER_CODE, code);
 		session.setAttribute(SessionKey.REGISTER_EMAIL, em);
-		System.out.println("REGISTER_CODE：" + session.getAttribute(SessionKey.USER_ID));
+		System.out.println("REGISTER_CODE：" + session.getAttribute(SessionKey.REGISTER_CODE));
 		try{
 			SendCodeToEmail.sendEmail(email, code);
 		}catch(Exception e){

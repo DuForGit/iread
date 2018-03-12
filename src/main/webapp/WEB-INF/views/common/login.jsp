@@ -92,7 +92,7 @@ font-size: 12px;
 				   <div class="form-group">
 				      <div class="col-sm-12">
 				         <input type="text" class="form-control" id="user"  name="name"
-				            placeholder="手机/邮箱/用户名">
+				            placeholder="邮箱/用户名">
 				            <span class="point_hide">&nbsp;格式错误/不能为空</span>
 				      </div>
 				   </div>

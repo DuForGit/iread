@@ -1,6 +1,7 @@
 package com.iread.font.service.impl;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class BookServiceImpl implements BookService{
 	private BookMapper bookMapper;
 	@Autowired
 	private UserMapper userMapper;
+	/*@Autowired
+	private CommentMapper commentMapper;*/
 
 	/* (non-Javadoc)
 	 * @see com.iread.font.service.BookService#ebook(int, int)
@@ -41,6 +44,7 @@ public class BookServiceImpl implements BookService{
 		}else{infos.put("existcart", true);}
 		infos.put("book", bookMapper.getBookInfo(bid));
 		infos.put("chapter", bookMapper.getChaper(bid));
+		//infos.put("comments", commentMapper.getComments(bid));
 		return infos;
 	}
 
@@ -115,6 +119,7 @@ public class BookServiceImpl implements BookService{
 		infos.put("existcart", false);
 		infos.put("book", bookMapper.getBookInfo(bid));
 		infos.put("chapter", bookMapper.getChaper(bid));
+		//infos.put("comments", commentMapper.getComments(bid));
 		return infos;
 	}
 

@@ -86,9 +86,9 @@ from orders o, books b, writer w, publish p
 	o.u_id = #{id}
 </select>
 
-<!-- public Integer resetPassword(@Param("pass") String pass, @Param("id") int uerId); -->
+<!-- public Integer resetPassword(@Param("pass") String pass, @Param("email") String email); -->
 <update id="resetPassword">
-update user set u_pass = #{pass} where u_id = #{id}
+update user set u_pass = #{pass} where u_email = #{email}
 </update>
 
 <!-- public void deleteMyBook(int id); -->
@@ -249,5 +249,149 @@ select ub_id from user_books where u_id = #{uid} and b_id = #{bid}
 <update id="addOne">
 update books set b_sales = b_sales + 1 where b_id = #{id}
 </update>
+
+
+<!-- 个性化推荐模块 -->
+
+<!-- List<Integer> getTypeIdsByBooksId(@Param("ids") List<Integer> ids); -->
+<select id="getTypeIdsByBooksId" resultType="int">
+select t_id from books where b_id in 
+<foreach collection="ids" item="bid" open="(" close=")" separator=",">
+			 #{bid}
+</foreach> 
+</select>
+
+<!-- Integer getTypeIdByBookId(@Param("bid") int bid); -->
+<select id="getTypeIdByBookId" resultType="int">
+select t_id from books where b_id = #{bid}
+</select>
+
+
+
+<resultMap type="book" id="books">
+	<id column="bid" property="id" />
+	<result column="bname" property="title"/>
+	<result column="bprice" property="price"/>
+	<result column="bsummary" property="summary"/>
+	<result column="breader" property="reader"/>
+	<result column="bvaluator" property="valuator"/>
+	<result column="bgrade" property="grade"/>
+	<result column="btext" property="text"/>
+	<result column="bcover" property="cover"/>
+	<result column="bnum" property="num"/>
+	<result column="bpayaway" property="payaway"/>
+	<result column="soldout" property="bsoldout"/>
+	<result column="blimit" property="limit"/>
+	<result column="bsales" property="sales"/>
+	
+	<association property="writer" javaType="writer">
+		<id column="wid" property="id"/>
+		<result column="wname" property="name"/>
+		<result column="wnum" property="num"/>
+		<result column="wsummary" property="summary"/>
+		<result column="wcover" property="cover"/>
+		<result column="wgender" property="gender"/>
+	</association>
+	<association property="publish" javaType="publish">
+		<id column="pid" property="id"/>
+		<result column="pname" property="name"/>
+		<result column="pnum" property="num"/>
+		<result column="psummary" property="summary"/>
+		<result column="pcover" property="cover"/>
+	</association>
+	<association property="nation" javaType="nation">
+		<id column="nid" property="id"/>
+		<result column="nname" property="name"/>
+	</association>
+	<association property="type" javaType="type">
+		<id column="tid" property="id"/>
+		<result column="tname" property="name"/>
+		<result column="tclid" property="clazz.id"/>
+		<!-- <result/>抛出异常Mapping is missing column attribute for property null -->
+	</association>
+</resultMap>
+
+
+<sql id="book">
+select
+			b.b_id as bid,
+			b.b_name as bname,
+			b.w_id as bwid,
+			b.p_id as bpid,
+			b.n_id as bnid,
+			b.b_price as bprice,
+			b.b_summary as bsummary,
+			b.b_reader as breader,
+			b.b_valuator as bvaluator,
+			b.b_grade as bgrade,
+			b.b_text as btext,
+			b.b_cover as bcover,
+			b.t_id as btid,
+			b.b_num as bnum,
+			b.b_payaway as bpayaway,
+			b.b_soldout as bsoldout,
+			b.b_limit as blimit,
+			w.w_id as wid,
+			w.w_name as wname,
+			w.w_num as wnum,
+			p.p_id as pid,
+			p.p_name as pname,
+			p.p_num as pnum,
+			n.n_id as nid,
+			n.n_name as nname,
+			t.t_id as tid,
+			t.t_name as tname,
+			t.cl_id as tclid,
+			b.b_sales as bsales,
+			w.w_summary as wsummary,
+			p.p_summary as psummary,
+			p.p_cover as pcover,
+			w.w_cover as wcover,
+			w.w_gender as wgender
+		from books b 
+			inner join writer w on b.w_id = w.w_id
+			inner join publish p on b.p_id = p.p_id
+			inner join nation n on b.n_id = n.n_id
+			inner join type t on b.t_id = t.t_id 
+			JOIN (SELECT ROUND(RAND() * (SELECT MAX(b_id) FROM `books`)) AS rid) AS b2
+</sql>
+
+
+
+<!-- List<Book> getBooksByTypeIds(@Param("tids")List<Integer> tids,@Param("bids")List<Integer> bids); -->
+<select id="getBooksByTypeIds" resultMap="books">
+<include refid="book"/>
+where b.b_id >= b2.rid and b.t_id in 
+<foreach collection="tids" item="tid" open="(" close=")" separator=",">
+			 #{tid}
+</foreach>
+ and b.b_id not in 
+<foreach collection="bids" item="bid" open="(" close=")" separator=",">
+			 #{bid}
+</foreach>
+ limit 12
+</select>
+
+<!-- List<Book> getBooksByTypeId(@Param("tid")int tid,@Param("bid")int bid); -->
+<select id="getBooksByTypeId" resultMap="books">
+<include refid="book"/>
+where b.b_id >= b2.rid and b.t_id = #{tid} and b.b_id != #{bid} limit 12
+</select>
+
+
+<!-- List<Integer> getMyBookIds(@Param("uid")int uid); -->
+<select id="getMyBookIds" resultType="int">
+select b_id from mybooks where u_id = #{uid}
+</select>
+
+<!-- List<Integer> getMyCartBookIds(@Param("uid")int uid); -->
+<select id="getMyCartBookIds" resultType="int">
+select b_id from cart where u_id = #{uid}
+</select>
+
+<!-- List<Integer> getMyOrderBookIds(@Param("uid")int uid); -->
+<select id="getMyOrderBookIds" resultType="int">
+select b_id from orders where u_id = #{uid}
+</select>
 
 </mapper>

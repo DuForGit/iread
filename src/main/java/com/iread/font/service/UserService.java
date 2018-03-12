@@ -27,7 +27,7 @@ public interface UserService {
 	public AIIAboutMe getMyInfos(int userId);//获取个人信息
 	public void setMyInfos(UserInfomations info);//设置个人信息
 	public void changeMyInfos(UserInfomations info);//更改个人信息
-	public boolean changePass(int userId, String newPass);//更改密码
+	public boolean changePass(String email, String newPass);//更改密码
 	public void addMyBook(MyBookDo book);//添加图书到书架
 	public void deleteMyBook(int id); //删除书架上的图书（mybooks 主键）
 	public int getMybookId(int uId,int bId);//根据用户ID和图书ID找书架对应的主键

@@ -19,7 +19,7 @@ import com.github.pagehelper.PageInfo;
  *
  */
 public class PageUtil {
-	private static final int PAGE_SIZE = 1;//默认每一页的book数量
+	private static final int PAGE_SIZE = 2;//默认每一页的book数量
 	private PageUtil(){}
 	public static final PageUtil PAGE_UTIL = new PageUtil();
 	

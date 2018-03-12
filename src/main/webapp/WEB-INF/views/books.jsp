@@ -172,6 +172,14 @@ function NumPage(pageNum, pages){
 					p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
 				}
 			}
+		}else{
+			for(var i = 1;i <=10;i++){
+				if(i == pageNum){
+					p = p + "<li style='cursor:pointer' class='active' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				}else{
+					p = p + "<li style='cursor:pointer' onclick='pagebooks("+i+")'><a>"+i+"</a></li>";
+				}
+			}
 		}
 	}
 	return p;
@@ -380,10 +388,10 @@ $(document).ready(function(){
 				</a>
 				<div id="lists">
 				</div>
-				<div id="actions">
+				<%-- <div id="actions">
 					<a class="list-group-item"><img alt="活动推荐" src="${ctp}/resources/imgs/books/action1 (1).jpg"></a>
 					<a class="list-group-item"><img alt="活动推荐" src="${ctp}/resources/imgs/books/action1 (2).jpg"></a>
-				</div>
+				</div> --%>
 		</div>
 		
 		

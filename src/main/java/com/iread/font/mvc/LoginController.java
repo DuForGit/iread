@@ -2,12 +2,11 @@ package com.iread.font.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.iread.beans.domain.User;
 import com.iread.font.beans.vo.LoginVo;
 import com.iread.font.service.LoginService;
 import com.iread.utils.SessionKey;
@@ -35,6 +34,6 @@ public class LoginController {
 		}
 		request.getSession().setAttribute(SessionKey.USER_ID, id);
 		System.out.println("登录成功");
-		return "index";
+		return "redirect:/index";
 	}
 }

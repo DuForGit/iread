@@ -46,7 +46,7 @@ public interface UserMapper {
 	public List<Order> getOrderBookIdsByUserId(@Param("id") int id);
 	
 	//重置密码(user)
-	public Integer resetPassword(@Param("pass") String pass, @Param("id") int uerId);
+	public Integer resetPassword(@Param("pass") String pass, @Param("email") String email);
 	
 	//删除书架上的图书(mybooks),id表示mybooks上的主键
 	public void deleteMyBook(@Param("id") int id);
@@ -97,6 +97,28 @@ public interface UserMapper {
 	//添加订单
 	public Float getPrice(@Param("bid")int bid);
 	public void addOrder(@Param("bid")int bid,@Param("uid") int uid,@Param("price")float price);
+	
+	
+	/**个性化推荐*/
+	//更具bookID获取typeID
+	List<Integer> getTypeIdsByBooksId(@Param("ids") List<Integer> ids);
+	//根据bookId获取typeId
+	Integer getTypeIdByBookId(@Param("bid") int bid);
+	
+	//根据多个类型ID随机获取Books列表
+	List<Book> getBooksByTypeIds(@Param("tids")List<Integer> tids,@Param("bids")List<Integer> bids);
+	//根据类型Id随机获取Book列表
+	List<Book> getBooksByTypeId(@Param("tid")int tid,@Param("bid")int bid);
+	
+	//随机获取书架上的bookID集合
+	List<Integer> getMyBookIds(@Param("uid")int uid);
+	//随机获取购物车上的bookID集合
+	List<Integer> getMyCartBookIds(@Param("uid")int uid);
+	//随机获取订单的bookID集合
+	List<Integer> getMyOrderBookIds(@Param("uid")int uid);
+	
+	
+	
 	
 	//获取系统消息(system_news-reading)
 	

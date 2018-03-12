@@ -141,7 +141,7 @@ public class UserInfoController {
 	@RequestMapping("/quit")
 	public String quit(HttpServletRequest request){
 		request.getSession().removeAttribute(SessionKey.USER_ID);
-		return "index";
+		return "redirect:/index";
 	}
 	
 	

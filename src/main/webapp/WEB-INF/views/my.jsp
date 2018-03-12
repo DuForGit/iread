@@ -51,7 +51,7 @@ function F_Open_dialog()
 		<a class="list-group-item" id="listhead" href="${ctp}/my">
 		<!-- <form action="/upload" enctype="multipart/form-data" method="post"> -->
 			<input type="file" id="btn_file" style="display:none">
-			<img src="${ctp}/resources/imgs/user/404.png" class="img-circle" style="width: 100px; margin-bottom: 5px;" onclick="F_Open_dialog()">
+			<%-- <img src="${ctp}/resources/imgs/user/404.png" class="img-circle" style="width: 100px; margin-bottom: 5px;" onclick="F_Open_dialog()"> --%>
 		<!-- </form> -->
 			<li  id="name">${info.user.name}</li>
 		</a>

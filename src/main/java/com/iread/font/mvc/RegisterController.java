@@ -1,13 +1,12 @@
 package com.iread.font.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.iread.beans.domain.User;
-import com.iread.beans.domain.UserIdentify;
 import com.iread.beans.domain.UserInfomations;
 import com.iread.font.beans.vo.RegisterVo;
 import com.iread.font.service.RegisterService;
@@ -16,8 +15,6 @@ import com.iread.utils.SessionKey;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 /**
  *项目名称: iread
  *类名称: RegisterPage
@@ -35,7 +32,8 @@ public class RegisterController {
 	private RegisterService reg;
 	
 	@RequestMapping(value="/reg",method = GET)
-	public String register(){
+	public String register(HttpServletRequest request){
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT, false);
 		return "register";
 	}
 	
@@ -50,6 +48,7 @@ public class RegisterController {
 		if(emailCode == code && reEmail.equals(sessionEmail)){
 			Integer uId = reg.register(re);
 			if(uId != null){
+				h.getSession().removeAttribute(SessionKey.IS_SUBMIT);
 				h.getSession().setAttribute(SessionKey.USER_ID, uId);
 				return h.getContextPath();
 			}

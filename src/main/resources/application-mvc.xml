@@ -52,7 +52,20 @@
 			<mvc:mapping path="/addmybook"/>
 			<mvc:mapping path="/addcart"/>
 			<mvc:mapping path="/buy"/>
+			<mvc:mapping path="/addcomment"/>
 			<bean class="com.iread.font.mvc.interceptor.AccessInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/setmypass"/>
+			<mvc:mapping path="/submitnewpass"/>
+			<bean class="com.iread.font.mvc.interceptor.ChangePassInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/setpass"/>
+			<mvc:mapping path="/postUser"/>
+			<bean class="com.iread.font.mvc.interceptor.ReSubmitIntercepter"/>
 		</mvc:interceptor>
 		
 		<mvc:interceptor>

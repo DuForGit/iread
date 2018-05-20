@@ -71,8 +71,10 @@ public class IndexServiceImpl implements IndexService{
 	 */
 	@Override
 	public Map<String, Object> getIndexBooks(int uid) {
-		Map<String, Object> index = getIndexBooks();
-		List<Integer> bids = userMapper.getBookIdsByUserId(uid);
+		Map<String, Object> index = new HashMap<>();
+		List<Integer> bids = null;
+		bids = userMapper.getBookIdsByUserId(uid);
+		System.out.println("bids:" + bids.isEmpty());
 		if(bids !=null && !bids.isEmpty()){
 			index.put("bookcase", userMapper.getBooksByTypeIds(userMapper.getTypeIdsByBooksId(bids), bids));
 		}
@@ -84,9 +86,10 @@ public class IndexServiceImpl implements IndexService{
 		if(bids !=null && !bids.isEmpty()){
 			index.put("orderbook", userMapper.getBooksByTypeIds(userMapper.getTypeIdsByBooksId(bids), bids));
 		}
-		
-		return index;
-	}
+		index.put("hots", indexMapper.getHotBooks());
+		index.put("news", indexMapper.getNewBooks());
+		index.put("sales", indexMapper.getHotSaleBooks());
+		return index;}
 
 	
 

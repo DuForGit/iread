@@ -37,7 +37,8 @@ public class CodeController {
 		}catch(Exception e){
 			return false;
 		}
-		session.setMaxInactiveInterval(60);
+		//session.setMaxInactiveInterval(60);
+		session.setAttribute(SessionKey.CODE_LIFE, System.currentTimeMillis());
 		return true;
 	}
 }

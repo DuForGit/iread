@@ -1,15 +1,16 @@
 package com.iread.font.service.impl;
 
-import java.util.List;
+
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iread.beans.domain.Comment;
 import com.iread.font.dao.CommentMapper;
 import com.iread.font.service.CommentService;
 import com.iread.utils.PageUtil;
+import com.iread.utils.SensitiveWordUtil;
 
 /**
  *项目名称: iread
@@ -31,7 +32,10 @@ public class CommentServiceImpl implements CommentService{
 	 */
 	@Override
 	public void addComment(int uid, int bid, String com) {
-		comment.addComment(uid, bid, com);
+		//信息过滤与屏蔽
+		
+		String word = SensitiveWordUtil.replaceSensitiveWord(com, "***",SensitiveWordUtil.MinMatchTYpe);
+		comment.addComment(uid, bid, word);
 	}
 
 	/* (non-Javadoc)

@@ -23,14 +23,16 @@ public class ChangePassInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
+		//System.out.println("拦截器执行时间：" + System.currentTimeMillis());
 		if(request.getSession().getAttribute(SessionKey.IS_SUBMIT) == null
 				|| (boolean) request.getSession().getAttribute(SessionKey.IS_SUBMIT) != true){
 			System.out.println("拦截");
+			//System.out.println("is_submit:" + request.getSession().getAttribute(SessionKey.IS_SUBMIT) == null);
+			System.out.println("submittrue:" + request.getSession().getAttribute(SessionKey.IS_SUBMIT));
 			response.sendRedirect(request.getContextPath() + "/getpass");
 			return false;
 		}
-		
+		System.out.println("ChangePassInterceptor通过");
 		return true;
 	}
 

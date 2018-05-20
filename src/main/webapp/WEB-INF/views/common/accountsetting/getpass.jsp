@@ -51,9 +51,10 @@ function trimString(s){
 
 var isemail = false;
 var iscode = false;
+var hasemail = false;
 $(document).ready(function(){
 	$("#changepass_user").blur(function(){
-		var em = $("#changepass_user").val();
+		var em = trimString($("#changepass_user").val());
 		if(em == null || em == ""){
 			isemail = false;
 			$("#emailspan").text("不能为空");
@@ -65,9 +66,11 @@ $(document).ready(function(){
 				$.post("${ctp}/isExistEmail",{email:em},function(date){
 					if(date == false){
 						isemail = false;
+						hasemail = false;
 						$("#emailspan").text("不存在该邮箱");
 					}else{
 						isemail = true;
+						hasemail = true;
 						$("#emailspan").text("");
 					}
 				});
@@ -76,12 +79,12 @@ $(document).ready(function(){
 	});
 	
 	$("#changepass_identify").blur(function(){
-		var co = $("#changepass_identify").val();
+		var co = trimString($("#changepass_identify").val());
 		if(co == null || co == ""){
 			iscode = false;
 			$("#codespan").text("不能为空");
 		}else{
-			if(!isCode(trimString(co))){
+			if(!isCode(co)){
 				iscode = false;
 				$("#codespan").text("不合法");
 			}else{
@@ -92,8 +95,8 @@ $(document).ready(function(){
 	});
 	
 	$("#codebtn").click(function(){
-		var em = $("#changepass_user").val();
-		if(isEmail(trimString(em))){	
+		var em = trimString($("#changepass_user").val());
+		if(isEmail(em) && hasemail == true){	
 			isemail = true;
 			$.post("${ctp}/changecode",{email:em},function(data){
 					if(data == true){
@@ -103,7 +106,7 @@ $(document).ready(function(){
 							$("#codebtn").css("opacity","0.2");
 							$("#codebtn").css("pointer-events","none");
 							$("#codebtn").html(time--);
-							if(time <= 0){
+							if(time < 0){
  							$("#codebtn").css("opacity","1");
  							$("#codebtn").html("获取验证码");
  							$("#codebtn").css("pointer-events","auto");
@@ -111,22 +114,24 @@ $(document).ready(function(){
  						}
 						},1000);
 						
-					}else alert("发送失败，请重新发送请求");
+					}else alert("请不要多次提交数据;检查邮箱是否收到信息,没接收请重新发送请求");
 				});
 		}else{
-			alert("邮箱或验证码有误");
+			alert("检查邮箱是否存在或者格式是否合法");
 		}
 	});
 	
 	$("#changepass_next").click(function(){
-		var em = $("#changepass_user").val();
-		var co = $("#changepass_identify").val();
-		if(isEmail(trimString(em)) && isCode(trimString(co))){
+		var em = trimString($("#changepass_user").val());
+		var co = trimString($("#changepass_identify").val());
+		if(isEmail(trimString(em)) && isCode(trimString(co)) && hasemail == true){
 			$.post("${ctp}/setpass",{email:em,code:co},function(date){
 				if(date == true){
 					window.location.href="${ctp}/setmypass";
-				}else{alert("验证码错误");}
+				}else{alert("弹出该框表示出现以下问题：验证码错误或失效、重复提交信息");window.location.href="${ctp}/getpass";}
 			});
+		}else{
+			alert("检查邮箱或者验证码是否合法，或者邮箱是否存在");
 		}
 	});
 	
@@ -161,7 +166,7 @@ $(document).ready(function(){
 				   
 				   <div class="form-group row">
 				      <div class="col-sm-6">
-				         <button id="changepass_next"  type="submit" class="btn btn-block changepass_next">下一步</button>
+				         <button id="changepass_next"  type="button" class="btn btn-block changepass_next">下一步</button>
 				      </div>
 				      <div class="col-sm-6"></div>
 				   </div>

@@ -32,6 +32,8 @@ public class AccountSettingsController {
 	@RequestMapping(value="/getpass", method=GET)
 	public String getPass(HttpServletRequest request){
 		request.getSession().setAttribute(SessionKey.IS_SUBMIT, false);
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST, 0);
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST, 0);
 		return "accountsettings";
 	}
 	
@@ -47,20 +49,29 @@ public class AccountSettingsController {
 		}catch(Exception e){
 			return false;
 		}
-		session.setMaxInactiveInterval(60);
-		System.out.println("5231515611156156");
+		//session.setMaxInactiveInterval(60);
+		session.setAttribute(SessionKey.CODE_LIFE, System.currentTimeMillis());
 		return true;	
 	}
 	
 	@RequestMapping(value="/setpass",method=POST)
 	@ResponseBody
 	public boolean setPass(HttpServletRequest request,String email,int code){
+		long start = (long)request.getSession().getAttribute(SessionKey.CODE_LIFE);//验证码创建阶段
+		long end = System.currentTimeMillis();//验证码失效阶段阶段
+		System.out.println("shijian:"+(end-start));
+		if(end - start > 60*1000){
+			System.out.println("验证码生命时间超过");
+			return false;
+		}
+		request.getSession().removeAttribute(SessionKey.CODE_LIFE);
 		int co = (int) request.getSession().getAttribute(SessionKey.GETPASS_CODE);
 		String em = (String) request.getSession().getAttribute(SessionKey.GETPASS_EMAIL);
-//		System.out.println("code: "+code + ";  email: " + email);
-//		System.out.println("sessioncode: "+co + ";  sessionemail: " + em);
-		request.getSession().setAttribute(SessionKey.IS_SUBMIT, true);
+		System.out.println("co:" + co + "em:" + em);
 		if(code == co && email.equals(em)){
+			request.getSession().setAttribute(SessionKey.IS_SUBMIT, true);
+			
+			System.out.println("issubmit:" + request.getSession().getAttribute(SessionKey.IS_SUBMIT));
 			return true;
 		}else{	
 			return false;
@@ -78,8 +89,11 @@ public class AccountSettingsController {
 	public boolean newPass(HttpServletRequest request,String pass){
 		request.getSession().removeAttribute(SessionKey.IS_SUBMIT);
 		String email = (String) request.getSession().getAttribute(SessionKey.GETPASS_EMAIL);
-		boolean success = user.changePass(email, pass);
 		request.getSession().removeAttribute(SessionKey.GETPASS_EMAIL);
+		request.getSession().removeAttribute(SessionKey.GETPASS_CODE);
+		request.getSession().removeAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST);
+		request.getSession().removeAttribute(SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST);
+		boolean success = user.changePass(email, pass);
 		return success;
 	}
 	

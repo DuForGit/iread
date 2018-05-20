@@ -59,6 +59,8 @@ select b_id from mybooks where u_id = #{id}
 <id column="oid" property="id"/>
 <result column="odate" property="date"/>
 <result column="oprice" property="price"/>
+<result column="payID" property="payID"/>
+<result column="orderID" property="orderID"/>
 <association property="book" javaType="com.iread.beans.domain.OrderBook">
 <id column="bid" property="id"/>
 <result column="bname" property="title"/>
@@ -76,7 +78,7 @@ select b_id from mybooks where u_id = #{id}
 <!-- public List<Order> getOrderBookIdsByUserId(int id); -->
 <select id="getOrderBookIdsByUserId" resultMap="order">
 select 
-	o.o_id as oid,o.o_date as odate,o.o_price as oprice,
+	o.o_id as oid,o.o_date as odate,o.o_price as oprice,o_payID as payID,o_orderID as orderID,
 	b.b_id as bid,b.b_name as bname,b.b_cover as bcover,
 	w.w_id as wid,w_name wname,
 	p.p_id as pid,p.p_name as pname
@@ -119,7 +121,8 @@ insert into mybooks (u_id,b_id,my_payment,my_point) values (#{userId},#{bookId},
 	select 
 		u.u_id as uid,u.u_name as uname,u.u_email as uemail,
 		i.i_id as iid, i.i_nickname as inickname,i.i_image as iimage,i.i_gender as igender,i.i_aboutme as iaboutme
-		from user u, info i where u.u_id = i.i_id and u.u_id = #{id}
+		from user u left join info i  on u.u_id = i.i_id where u.u_id = #{id}
+		<!-- , info i where u.u_id = i.i_id and u.u_id = #{id} -->
 </select>
 
 <!-- public Integer setMyInfos(UserInfomations userInfos); -->
@@ -236,19 +239,34 @@ delete from cart where b_id = #{bid} and u_id = #{uid}
 <select id="getPrice" resultType="float">
 select b_price from books where b_id = #{bid}
 </select>
-<!-- public void addOrder(@Param("bid")int bid,@Param("uid") int uid,@Param("price")int price); -->
+<!-- public void addOrder(@Param("bid")int bid,@Param("uid") int uid,@Param("price")int price,@Param("orderId") String orderId,@Param("payId") String payId); -->
 <insert id="addOrder">
-insert into orders (b_id,u_id,o_date,o_price) values (#{bid},#{uid},now(),#{price})
+insert into orders (b_id,u_id,o_date,o_price,o_payID,o_orderID) values (#{bid},#{uid},now(),#{price},#{payId},#{orderId})
 </insert>
 <!-- public Integer isExistRecentReadingBook(@Param("uid") int uid,@Param("bid") int bid); -->
 <select id="isExistRecentReadingBook" resultType="int">
 select ub_id from user_books where u_id = #{uid} and b_id = #{bid}
 </select>
 
+<!-- public int hasOrder(@Param("bid")int bid,@Param("uid")int uid); -->
+<select id="hasOrder" resultType="int">
+select o_id from orders where b_id = #{bid} and u_id = #{uid} 
+</select>
+
 <!-- public void addOne(@Param("id") int bid); -->
 <update id="addOne">
 update books set b_sales = b_sales + 1 where b_id = #{id}
 </update>
+
+<!-- public Date getSoldout(@Param("bid") int bid); -->
+<select id="getSoldout" resultType="java.util.Date">
+	select b_soldout from books where b_id  = #{bid}
+</select>
+
+<!-- public float isFree(@Param("bid")int bid); -->
+<select id="isFree" resultType="float">
+	select b_price from books where b_id = #{bid}
+</select>
 
 
 <!-- 个性化推荐模块 -->
@@ -369,13 +387,13 @@ where b.b_id >= b2.rid and b.t_id in
 <foreach collection="bids" item="bid" open="(" close=")" separator=",">
 			 #{bid}
 </foreach>
- limit 12
+ limit 6
 </select>
 
 <!-- List<Book> getBooksByTypeId(@Param("tid")int tid,@Param("bid")int bid); -->
 <select id="getBooksByTypeId" resultMap="books">
 <include refid="book"/>
-where b.b_id >= b2.rid and b.t_id = #{tid} and b.b_id != #{bid} limit 12
+where b.b_id >= b2.rid and b.t_id = #{tid} and b.b_id != #{bid} limit 6
 </select>
 
 
@@ -392,6 +410,20 @@ select b_id from cart where u_id = #{uid}
 <!-- List<Integer> getMyOrderBookIds(@Param("uid")int uid); -->
 <select id="getMyOrderBookIds" resultType="int">
 select b_id from orders where u_id = #{uid}
+</select>
+
+<resultMap type="com.iread.beans.domain.AlipayOrder" id="alipay">
+<id column="bid" property="id"/>
+<result column="title" property="title"/>
+<result column="writer" property="writer"/>
+<result column="publish" property="publish"/>
+<result column="price" property="price"/>
+</resultMap>
+<!-- AlipayOrder getAlipayOrder(@Param("bid") int bid); -->
+<select id="getAlipayOrder" resultMap="alipay">
+select b.b_id as bid,b.b_name as title,w.w_name as writer,p.p_name as publish,b.b_price as price 
+from books b inner join writer w on w.w_id = b.w_id inner join publish p on p.p_id = b.p_id
+ where b.b_id = #{bid}
 </select>
 
 </mapper>

@@ -25,6 +25,10 @@ public class LoginVo {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+	@Override
+	public String toString() {
+		return "LoginVo [name=" + name + ", pass=" + pass + "]";
+	}
 	
 	
 }

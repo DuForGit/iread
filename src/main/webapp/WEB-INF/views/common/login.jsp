@@ -88,7 +88,54 @@ font-size: 12px;
 					});
 				</script> -->
 				<!-- 表单 -->
-				<form class="form-horizontal" role="form" id="login_form" method="post" action="${ctp}/login">
+				<script src="${ctp }/resources/js/jquery-3.2.1.min.js"></script>
+				<script src="${ctp }/resources/js/jquery.md5.js"></script>
+				<script type="text/javascript">
+				
+				//验证邮箱
+				function isEm(email){
+					var reg = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+					return reg.test(email);
+				}
+				
+				function isNa(name){
+					var reg = /^[a-z0-9A-Z\u4e00-\u9fa5]+$/;
+					return reg.test(name);
+				}
+				
+				//密码格式
+				function isPass(p){
+					var reg = /^[a-zA-Z0-9]{6,20}$/;
+					return reg.test(p);
+				}
+				//除去字符串空格
+				function trimStr(s){
+					var result = s.replace(/\s+/g, "");
+					return result;
+				}
+				
+				
+					$(document).ready(function(){
+						$("#login_sub").click(function(){
+							var user = trimStr($("#user").val());
+							var password = trimStr($("#password").val());
+							if(isEm(user) || isNa(user)){
+								if(isPass(password)){
+									var md5Pass = $.md5(password);
+									//alert(md5Pass);
+									$.post("${ctp}/login",{name:user,pass:md5Pass},function(date){
+										window.location.replace("${ctp}"+date);
+									});
+								}else{
+									alert("密码格式错误!");
+								}
+							}else{
+								alert("登录名格式错误!");
+							}
+						});
+					});
+				</script>
+				<form class="form-horizontal" role="form" id="login_form" method="post" <%-- action="${ctp}/login" --%>>
 				   <div class="form-group">
 				      <div class="col-sm-12">
 				         <input type="text" class="form-control" id="user"  name="name"
@@ -118,7 +165,7 @@ font-size: 12px;
 				   </div>
 				   <div class="form-group">
 				      <div class="col-sm-12">
-				         <button id="login_sub" type="submit" class="btn btn-block">登录</button>
+				         <button id="login_sub" type="button" class="btn btn-block">登录</button>
 				      </div>
 				   </div>
 				</form>

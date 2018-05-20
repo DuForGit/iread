@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     <c:set var="ctp" value="${pageContext.request.contextPath }"/>
     <c:set var="book" value="${infos.book }"/>
     <c:set var="comments" value="${infos.comments }"/>
@@ -29,17 +30,24 @@ background-color: green;
 
 $(document).ready(function(){
 	$("#butt").click(function(){
+		
 		var comm = $("#mycomment").val();
 		var idd = ${book.id};
 		if(comm != undefined  && comm != null && comm != ""){
-			$.post("${ctp}/addcomment",{comment:comm,bid:idd},function(date){
-				if(date = true){
-					window.location.href="${ctp}/ebook?id=${book.id}";
-				}else{
-					window.location.href="${ctp}/reg"
-					//parent.location.reload();
-				}
-			});
+			if(confirm("是否确定提交该评论？一旦提交无法撤回或修改")){
+				$.post("${ctp}/addcomment",{comment:comm,bid:idd} ,function(date){
+					if(date != true){
+						window.location.href="${ctp}/reg";
+					}else{
+						window.location.href="${ctp}/ebook?id=${book.id}";
+						//alert(date);
+						////window.location.href="${ctp}/reg";
+						//$("body").load(date);
+						//parent.location.reload();
+					} 
+				});
+			}
+			
 		}else{
 			alert("评论不能为空");
 		}
@@ -79,6 +87,8 @@ function commentsShow(date){
 			row = row + "<dl class='fn-clear' style='width: 100%;'><dd style='width: 100%'><a>"+com.userName+"</a>：<span>"+com.comment+"</span></dd></dl>";
 			
 		}
+	}else{
+		row = row + "<span style='color:red;'>抢沙发</span>"
 	}
 	slider.html(row);
 	
@@ -187,11 +197,13 @@ function getComments(p){
 
 </head>
 <body>
+
 <%-- <c:out value="${infos.chapter}"/> --%>
-<%-- <c:out value="${infos}"/> --%>
+<%-- <c:out value="infos:  ${infos}"/> --%>
 <div class="list_content fn-clear" >
+<c:if test="${not empty infos}">
   <div class="list_left">
-    <div class="bookpic"><img src="${ctp}/resources/imgs/books/default.jpg" width="134" height="200"  alt=""/></div>
+    <div class="bookpic"><img src="http://localhost:8080/iAdmin/images/book/${book.cover}" width="134" height="200"  alt=""/></div>
     <div class="bookname">《${book.title}》</div>
     <div class="bookauthor">作者：<a>${book.writer.name}</a></div>
     <div class="bookauthor">出版社：<a>${book.publish.name}</a></div>
@@ -205,11 +217,16 @@ function getComments(p){
       <c:if test="${infos.existbook==false}">
       <a href="${ctp}/addmybook?id=${book.id}">加入书架</a> | 
       </c:if>
-       <c:if test="${infos.existcart==false}">
+       <c:if test="${infos.existcart==false and infos.existorder==false}">
       <a href="${ctp}/addcart?id=${book.id}">添加购物车</a>|
       </c:if>
       </span> 
+      <c:if test="${not empty infos.chapter}">
       <em><a href="${ctp}/showtext?bid=${book.id}" target="_blank">开始阅读</a></em>
+      </c:if>
+      <c:if test="${empty infos.chapter}">
+      <em>暂时无法提供阅读</em>
+      </c:if>
     </div>
     <div class="chapterbox">
       <dl>
@@ -219,46 +236,41 @@ function getComments(p){
         </c:forEach>
       </dl>
     </div>
-    
+    <%-- <c:if test=" ${not empty sessionScope.userId}">    </c:if> --%>
     <div id="mesage" style="margin-bottom: 20px;">
     	<h1><em>畅所欲言:</em></h1>
     	<textarea class="area" maxlength="100" placeholder="100字以内" id="mycomment"></textarea>
     	<button id="butt" style="padding:5px 5px;float: right; color:#fff;background-color: green;border: 0px;cursor:pointer;">提交</button>
     </div>
-    
+
 
     
     <div class="commentbox" style="width: 100%;">
-        <h1><em>用户评论</em></h1>
+        <h1><em>用户评论:</em></h1>
         <div class="comment_list" style="width: 100%;">
           <div id="slider" style="width: 100%;">
-            <!-- <dl class="fn-clear" style="width: 100%;">
-              <dd style="width: 100%"><a>云轩阁</a>：<span>dfds</span></dd>
-            </dl> -->
+            
           </div>
         </div>
         
         <div id="pages" class="pages">
-	      <!-- <span>共1250条</span> 
-	      <a class="first" href="#">首页</a> 
-	      <a class="prev" href="#">上一页</a>
-	      <a class="num" href="#">4</a>
-	      <a class="num" href="#">5</a><a class="num" href="#">6</a><a class="num" href="#">7</a><a class="num" href="#">8</a><span class="current">9</span><a class="num" href="#">10</a><a class="num" href="#">11</a><a class="num" href="#">12</a><a class="num" href="#">13</a><a class="num" href="#">14</a> 
-	      <a class="next" href="#">下一页</a> 
-	      <a class="end" href="#">尾页</a> -->
+	      
 	    </div>
         
       </div>
     
-    
-    
-    
-    
-    
-    
-    
-    
   </div>
+  </c:if>
+  <c:if test="${empty infos}">
+  <div class="list_right">
+    <div class="position fn-clear">
+      <em><a href="${ctp}/">点击此处前往首页</a></em>
+    </div>
+    <div class="chapterbox">
+		<h3 style="text-align: center; font-size: 36px">本书已下架，无法阅读</h3>
+    </div>
+  </div>
+  </c:if>
 </div>
 </body>
 </html>

@@ -25,11 +25,15 @@ public class GenderInfoInterceptor implements HandlerInterceptor{
 			throws Exception {
 		
 		String gender = (String) request.getParameter("gender");
+		System.out.println("gender拦截器："  + (gender == ""));
 		if(isGender(gender)){return true;}
+		if(gender == ""){
+			return true;
+		}
 		System.out.println("拦截："+gender);
 		return false;
 	}
-	private static final String[] genders = new String[]{"男","女","男生","女生","帅哥","靓仔","靓女"};
+	private static final String[] genders = new String[]{"男","女","男生","女生","帅哥","美女","靓仔","靓女"};
 	private static boolean isGender(String gen){
 		boolean is = false;
 		for( String gender : genders){

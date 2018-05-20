@@ -1,10 +1,12 @@
 package com.iread.font.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.iread.beans.domain.Book;
+import com.iread.beans.domain.BookInAction;
 import com.iread.beans.domain.Chaper;
 import com.iread.beans.domain.Text;
 
@@ -39,6 +41,9 @@ public interface BookMapper {
 	//添加搜索记录
 	public void addSearch(@Param("ids") List<Integer> ids);
 	
+	//获取首页轮播图信息
+	List<BookInAction> getBookInAction();
 	
+	Date getSoldout(@Param("bid") int bid);
 	
 }

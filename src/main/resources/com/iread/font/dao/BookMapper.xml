@@ -58,7 +58,7 @@ select te_id,te_text from text where te_id = #{id}
 	<result column="bcover" property="cover"/>
 	<result column="bnum" property="num"/>
 	<result column="bpayaway" property="payaway"/>
-	<result column="soldout" property="bsoldout"/>
+	<result column="bsoldout" property="soldout"/>
 	<result column="blimit" property="limit"/>
 	<result column="bsales" property="sales"/>
 	
@@ -146,4 +146,18 @@ update books set b_search = b_search +1 where b_id in
 	</foreach>
 </update>
 
+<resultMap type="com.iread.beans.domain.BookInAction" id="action">
+<id column="ac_id" property="id"/>
+<result column="b_id" property="bookId"/>
+<result column="ac_cover" property="cover"/>
+</resultMap>
+<!-- List<BookInAction> getBookInAction(); -->
+<select id="getBookInAction" resultMap="action">
+select ac_id,b_id,ac_cover from action order by ac_id desc limit 3
+</select>
+
+<!-- Date getSoldout(@Param("bid") int bid); -->
+<select id="getSoldout" resultType="java.util.Date">
+select b_soldout from books where b_id = #{bid}
+</select>
 </mapper>

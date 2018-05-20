@@ -116,7 +116,7 @@ function navJsonList(){
 //返回的data为Map类型，包含books列表、总页数、总的book数量、当前页码、是否有前后页、前后页的页码等信息
 function booksShow(data){
 	var bookslist = $("#bookslist");
-	var row;
+	var row = "";
 	var booksL = data.list;//books列表
 	var size = booksL.length;//本页books列表的长度
 	var i = 0;
@@ -129,16 +129,17 @@ function booksShow(data){
 			colsize = i%6;
 			book = booksL[i];
 			if(colsize == 0){
-				row = $("<div class='row'>");
+				row =  row + "<div class='row'>";
 			}
 			
-			row.append("<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo'><img src='${ctp}/resources/imgs/books/" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>");
+			row=row + "<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo' href='${ctp}/ebook?id="+book.id+"' target='_blank'><img src='http://localhost:8080/iAdmin/images/book/${bk.cover}" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>";
 			
 			if(colsize == 5){
-				row.append("</div>");
+				row=row+"</div>";
 			}
-			bookslist.html(row);
+			
 		}
+		bookslist.html(row);
 	}else{bookslist.html(""); }
 	
 	

@@ -29,16 +29,16 @@ text-align: center;
 <div id="bottom" class="container hidden-xs hidden-sm">
 <div class="row">
 <div class="col-lg-4 col-md-4" >
-<fieldset style="font-size:20px;font-weight: bold;">第三方平台</fieldset>
-<li><a class="btn btn-link" style="color:#fff;">微信</a></li>
-<li><a class="btn btn-link" style="color:#fff;">QQ</a></li>
-<li><a class="btn btn-link" style="color:#fff;">微博</a></li>
+<fieldset style="font-size:20px;font-weight: bold;">搭建技术</fieldset>
+<li><a class="btn btn-link" style="color:#fff;">SSM框架</a></li>
+<li><a class="btn btn-link" style="color:#fff;">bootstrap</a></li>
+<li><a class="btn btn-link" style="color:#fff;">jQuery/Ajax/Json</a></li>
+<li><a class="btn btn-link" style="color:#fff;">MySQL</a></li>
+<li><a class="btn btn-link" style="color:#fff;">Jstl / El</a></li>
 </div>
 <div class="col-lg-4 col-md-4" >
 <fieldset style="font-size:20px;font-weight: bold;">借鉴网站</fieldset>
-<li><a class="btn btn-link" style="color:#fff;">百度阅读</a></li>
-<li><a class="btn btn-link" style="color:#fff;">百度搜索</a></li>
-<li><a class="btn btn-link" style="color:#fff;">网易云阅读</a></li>
+<li><a class="btn btn-link" style="color:#fff;" target="_black"  href="https://yuedu.baidu.com/">百度阅读</a></li>
 </div>
 <div class="col-lg-4 col-md-4 ">
 <fieldset style="font-size:20px;font-weight: bold;">参考资料</fieldset>
@@ -51,7 +51,7 @@ text-align: center;
 </div>
 <div class="row">
 <li>基于java的‘i读书’在线书城系统的设计与实现</li>
-<li>© 2005 - 2017 | all rights reserved</li>
+<li>© 2017 - 2018 | all rights reserved</li>
 </div>
 </div>
 <div id="bottom_mod" class="container hidden-lg hidden-md">

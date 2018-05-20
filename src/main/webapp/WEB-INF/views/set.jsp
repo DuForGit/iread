@@ -69,7 +69,7 @@ font-size: 24px;
 		<div id="accountchange" class="row">
 			 
 			 <div class="col-sm-12 col-xs-12 col-lg-9 col-md-9" id="changpassforms">
-			 	
+<script src="${ctp }/resources/js/jquery.md5.js"></script>			 	
 <script type="text/javascript">
 
 //除去字符串空格
@@ -91,11 +91,12 @@ $(document).ready(function(){
 			alert("密码不一致");
 		}else{
 			if(isPassword(trimString(newpass1))){
-				$.post("${ctp}/submitnewpass",{pass:newpass1},function(date){
+				var md5p = $.md5(newpass1);
+				$.post("${ctp}/submitnewpass",{pass:md5p},function(date){
 					if(date == true){
 						window.location.href="${ctp}";
 					}else{
-						alert("更改密码出现错误");
+						alert("弹出该框表示出现以下问题：更改密码失败、重复提交信息");
 					}
 				});
 			}else{

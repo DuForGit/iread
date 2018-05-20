@@ -49,24 +49,42 @@ public class LoginInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		//String path = request.getContextPath();
+		if(request.getSession().getAttribute(SessionKey.IS_SUBMIT_LOGIN_REQUEST) == null){
+			System.out.println("SessionKey.IS_SUBMIT_LOGIN_REQUEST为空");
+			response.sendRedirect("/reg");
+			return false;
+		}
+		int login = 0;
+		//synchronized (request.getSession()) {
+				
+			login = (int)request.getSession().getAttribute(SessionKey.IS_SUBMIT_LOGIN_REQUEST);//提交测试
+			if(login > 0){
+				System.out.println("重复提交登录信息" );
+				response.sendRedirect("/reg");
+				return false;
+			}
+			request.getSession().setAttribute(SessionKey.IS_SUBMIT_LOGIN_REQUEST, login + 1);
+		//}
+
+		
 		Integer id = (Integer) request.getSession().getAttribute(SessionKey.USER_ID);
-		String path = request.getContextPath();
+		
 		if(id == null){//表示未登录，需要在登录或注册
 			String pass = request.getParameter("pass");
 			String name = request.getParameter("name");
-			System.out.println("拦截器：name-" + name + ";pass-" + pass);
 			if((name.matches(RegexUtil.REGEX_NAME) || 
 					name.matches(RegexUtil.REGEX_EMAIL) || 
 					name.matches(RegexUtil.REGEX_MOBILE)) &&
 					pass.matches(RegexUtil.REGEX_PASSWORD)){
 				return true;
 			}else{
-				response.sendRedirect(path + "/reg");
+				response.sendRedirect("/reg");
 				System.out.println("拦截器：格式错误");
 				return false;
 			}
 		}
-		response.sendRedirect(path + "/");
+		response.sendRedirect("/");
 		System.out.println("拦截器：已经登录");
 		return false;
 		

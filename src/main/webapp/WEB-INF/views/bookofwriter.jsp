@@ -46,7 +46,7 @@ function showBook(data){
 			+"<div class='col-lg-9 col-md-9'>"
 			+"<div class='row'>"
 			+"<div  class='col-lg-2 col-md-2' id='bimg'>"
-			+"<img src='${ctp}/resources/imgs/books/"+book.cover+"' class='img-responsive img-rounded' /></div>"
+			+"<img src='http://localhost:8080/iAdmin/images/book/"+book.cover+"' class='img-responsive img-rounded' /></div>"
 			+"<div  class='col-lg-10 col-md-10' id='binfos'>"
 			+"<div class='row'><span class='stitle'>"+book.title+"</span><span class='color'>("+book.publish.name+")</span></div>"
 			+"<div class='row stars'>";

@@ -37,6 +37,7 @@ font-size: 12px;
 line-height: 20px;
 }
 </style>
+<script src="${ctp }/resources/js/jquery.md5.js"></script>
 <script type="text/javascript">
 var isExEmail = false;//是否存在邮箱
 var isExName = false;//是否存在名称
@@ -88,7 +89,8 @@ $(document).ready(function(){
 					data:{name:rname,email:remail,password:rpassword,code:rcode},
 					type:"POST"}
 			);  */
-			$.post("${ctp}/postUser",{name:rname,email:remail,password:rpassword,code:rcode},function(data){
+			var md5Pass = $.md5(rpassword);
+			$.post("${ctp}/postUser",{name:rname,email:remail,password:md5Pass,code:rcode},function(data){
 				$(location).prop('href', data);
 			});
 			}
@@ -185,7 +187,7 @@ function isExist(e){
 				     			if(isEmail(remail) == false){
 				     				alert("邮箱格式有误");
 				     			}else{
-				     				
+				     				if(isExEmail == true){alert("邮箱已经存在");}else{
 				     				$.post("${ctp}/isExistEmail",{email:remail},function(data){
 										var d =data;
 				     					if(d == true){
@@ -199,7 +201,7 @@ function isExist(e){
 						     							$("#identify_code").css("opacity","0.2");
 						     							$("#identify_code").css("pointer-events","none");
 						     							$("#identify_code").html(time--);
-						     							if(time <= 0){
+						     							if(time < 0){
 							     							$("#identify_code").css("opacity","1");
 							     							$("#identify_code").html("获取验证码");
 							     							$("#identify_code").css("pointer-events","auto");
@@ -207,12 +209,13 @@ function isExist(e){
 							     						}
 						     						},1000);
 						     						
-													}else alert("发送失败，请重新发送请求");
+													}else alert("请不要多次提交数据;检查邮箱是否收到信息,没接收请重新发送请求");
 						     				});
 				     					}
 
 				     					
 				     				});
+				     				}
 					     			
 				     			}
 				     			

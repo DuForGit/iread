@@ -13,12 +13,20 @@ import java.util.Random;
  */
 public class CodeUtil {
 	private static  final Random r = new Random();
+	//private static final String test = "801402";//测试以0开头的结果
 	private CodeUtil(){};
 	
 	public static int getCode(){
 		String code = "";
 		for(int i=0; i<6;i++){
 			code+=r.nextInt(10);
+			//code += test.substring(i, i+1);
+			if(i == 0){//判断第一个值
+				if(code.equals("0")){
+					System.out.println("首位为0");
+					code = "1";
+				}
+			}
 		}
 		System.out.println("getCode:" + code);
 		return Integer.parseInt(code);

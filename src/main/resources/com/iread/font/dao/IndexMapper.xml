@@ -90,16 +90,16 @@ select
 <!-- List<Book> getNewBooks(); -->
 <select id="getNewBooks" resultMap="books">
 <include refid="book"/>
-order by b.b_id DESC limit 12
+order by b.b_id DESC limit 6
 </select>
 <!-- List<Book> getHotBooks(); -->
 <select id="getHotBooks" resultMap="books">
 <include refid="book"/>
-order by b.b_reader DESC limit 12
+order by b.b_reader DESC limit 6
 </select>
 <!-- List<Book> getHotSaleBooks(); -->
 <select id="getHotSaleBooks" resultMap="books">
 <include refid="book"/>
-order by b.b_sales DESC limit 12
+order by b.b_sales DESC limit 6
 </select>
 </mapper>

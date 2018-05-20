@@ -59,11 +59,18 @@ font-weight: bolder;
 <div class="row">
 <c:forEach items="${books}" var="book" >
 	<div class="col-lg-2 col-md-2" style="cursor:pointer;margin: auto 10px;;" >
-		<img width="150" alt="" src="${ctp}/resources/imgs/books/${book.cover}" >
+		<img width="150" alt="" src="http://localhost:8080/iAdmin/images/book/${book.cover}" >
 		<ul class='list-unstyled'>
-		<li style="margin-top: 5px;font-family:SimHei; text-align: center;">${book.title }</li>
+		<li style="margin-top: 5px;font-family:SimHei; text-align: center;">
+		<c:if test="${fn:length(book.title)>'7'}">
+			 ${fn:substring(book.title,0,7)}...
+		 </c:if>
+		 <c:if test="${fn:length(book.title)<='7'}">
+			 ${book.title}
+		 </c:if>
+		</li>
 		<li class="row">
-			<a href="${ctp}/delmybook?id=${book.id}" type="button" class="btn btn-xs btn-danger pull-left" style="margin-left: 25px;">删除</a>
+			<a <%-- href="${ctp}/delmybook?id=${book.id}"  --%> onclick="deleteMyBook(${book.id});" ctype="button" class="btn btn-xs btn-danger pull-left" style="margin-left: 25px;">删除</a>
 			<a type="button" class="btn btn-xs btn-success pull-right" href="${ctp}/ebook?id=${book.id}"  target="_blank">查看</a>
 		</li>
 		</ul>
@@ -71,7 +78,22 @@ font-weight: bolder;
 </c:forEach>
 </div>
 
-
+<script type="text/javascript">
+function deleteMyBook(i){
+if(confirm("是否确定将该书从购物车中移除？")){
+		
+		uri = "${ctp}/delmybook";
+		$.post(uri,{id:i});
+		//window.location.href="${ctp}/my";
+		$("#main").load("${ctp}/mybooks");
+		$("#main").load("${ctp}/mybooks");
+		
+		
+		
+		
+	}
+}
+</script>
 
 <%-- <div class="row" style="text-align: center;">
 <ul class='pagination'>

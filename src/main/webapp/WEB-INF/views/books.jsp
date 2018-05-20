@@ -91,7 +91,7 @@ padding:0px;
 //返回的data为Map类型，包含books列表、总页数、总的book数量、当前页码、是否有前后页、前后页的页码等信息
 function booksShow(data){
 	var bookslist = $("#books_infos");
-	var row;
+	var row = "";
 	var booksL = data.list;//books列表
 	var size = booksL.length;//本页books列表的长度
 	var i = 0;
@@ -104,17 +104,18 @@ function booksShow(data){
 			colsize = i%6;
 			book = booksL[i];
 			if(colsize == 0){
-				row = $("<div class='row'>");
+				row = row + "<div class='row'>";
 			}
 			
-			row.append("<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo' href='${ctp}/ebook?id="+book.id+"'><img src='${ctp}/resources/imgs/books/" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>");
+			row = row + "<div class='col-lg-2 col-md-2' style='cursor:pointer'><a class='bookinfo' href='${ctp}/ebook?id="+book.id+"'><img src='http://localhost:8080/iAdmin/images/book/${bk.cover}" + book.cover +"' class='img-responsive img-rounded'/> <ul class='list-unstyled'><li class='book_name'>"+book.title+"</li><li><span class='author'>"+book.writer.name+"</span><span class='price'><b>￥</b>"+book.price+"</span></li></ul></a> </div>";
 			
 			if(colsize == 5){
-				row.append("</div>");
+				row = row + "</div>";
 			}
-			bookslist.html(row);
+			
 		}
-	}else{bookslist.html(""); }
+		bookslist.html(row);
+	}else{bookslist.html(""); alert("暂无图书");}
 	
 	
 	//处理分页
@@ -416,7 +417,7 @@ $(document).ready(function(){
 					<button id="host" type="button" class="btn btn-default" style="color:#4CAF50;" onclick="getDataByURL(orderBooks(0,1));">热度<span class="glyphicon glyphicon-arrow-down" style="color:#4CAF50;"></span></button>
 					<button id="nums" type="button" class="btn btn-default" onclick="getDataByURL(orderBooks(1,1));">销量<span class="glyphicon glyphicon-arrow-down" ></span></button>
 					<button id="news" type="button" class="btn btn-default" onclick="getDataByURL(orderBooks(2,1));">最新<span class="glyphicon glyphicon-arrow-down"></span></button>
-					<button id="grade"  type="button" class="btn btn-default" onclick="getDataByURL(orderBooks(3,1));">评分<span class="glyphicon glyphicon-arrow-down"></span></button>
+					<!-- <button id="grade"  type="button" class="btn btn-default" onclick="getDataByURL(orderBooks(3,1));">评分<span class="glyphicon glyphicon-arrow-down"></span></button> -->
 					<button id="price"  type="button" class="btn btn-default" onclick="orderprice();">价格<span class="glyphicon glyphicon-resize-vertical"></span></button>
 				</div>
 			</div>

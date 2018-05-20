@@ -10,12 +10,15 @@ import com.iread.utils.SessionKey;
 
 /**
  *项目名称: iread
- *类名称: ReSubmitIntercepter
- *类描述: 防止重复提交拦截器
+ *类名称: CodeInterceptor
+ *类描述: 
+ *创建人: Administrator
+ *创建时间: 2018年4月15日上午1:20:29
+ * @version
  * @author 方秋都
  *
  */
-public class ReSubmitIntercepter implements HandlerInterceptor{
+public class CodeInterceptor implements HandlerInterceptor {
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
@@ -23,23 +26,20 @@ public class ReSubmitIntercepter implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if(request.getSession().getAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST) == null){
+			System.out.println("SessionKey.IS_SUBMIT_CODE_REQUEST为空");
+			return false;
+		}
 		
-		if(request.getSession().getAttribute(SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST) == null){
-			System.out.println("SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST为空");
-			return false;
-		}
-		int change = (int)request.getSession().getAttribute(SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST);
-		if(change > 0){
-			System.out.println("修改密码重复提交");
-			return false;
-		}
-		request.getSession().setAttribute(SessionKey.IS_SUBMIT_CHANGEPASS_REQUEST, change + 1);
-		/*if(request.getSession().getAttribute(SessionKey.IS_SUBMIT) == null
-				|| (boolean) request.getSession().getAttribute(SessionKey.IS_SUBMIT) == true){
-			System.out.println("验证通过");
-			return false;
-		}*/
-		System.out.println("ReSubmitIntercepter通过");
+
+			int submit = (int)request.getSession().getAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST);//提交次数
+			if(submit > 0){
+				System.out.println("重复提交验证码");
+				return false;
+			}
+			request.getSession().setAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST, submit + 1);
+
+		
 		return true;
 	}
 

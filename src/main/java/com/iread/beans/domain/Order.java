@@ -14,6 +14,23 @@ public class Order {
 	private OrderBook book;//购买图书信息
 	private Date date;//购买日期
 	private Float price;//购买价格
+	private String payID;//支付宝订单号
+	private String orderID;//订单号
+	
+	
+	
+	public String getPayID() {
+		return payID;
+	}
+	public void setPayID(String payID) {
+		this.payID = payID;
+	}
+	public String getOrderID() {
+		return orderID;
+	}
+	public void setOrderID(String orderID) {
+		this.orderID = orderID;
+	}
 	public Integer getId() {
 		return id;
 	}

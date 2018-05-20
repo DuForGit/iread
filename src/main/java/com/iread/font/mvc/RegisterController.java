@@ -33,7 +33,9 @@ public class RegisterController {
 	
 	@RequestMapping(value="/reg",method = GET)
 	public String register(HttpServletRequest request){
-		request.getSession().setAttribute(SessionKey.IS_SUBMIT, false);
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT_REGISTER_REQUEST, 0);//防止重复提交注册信息
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT_LOGIN_REQUEST, 0);//防止重复提交登录信息
+		request.getSession().setAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST, 0);//防止重复提交验证码信息
 		return "register";
 	}
 	
@@ -41,6 +43,15 @@ public class RegisterController {
 	@RequestMapping(value="/postUser",method=POST)
 	@ResponseBody
 	public String register(RegisterVo re,HttpServletRequest h){
+		
+		long start = (long)h.getSession().getAttribute(SessionKey.CODE_LIFE);//验证码创建阶段
+		long end = System.currentTimeMillis();//验证码失效阶段阶段
+		System.out.println("shijian:"+(end-start));
+		if(end - start > 60*1000){
+			System.out.println("验证码生命时间超过");
+			return h.getContextPath() + "/reg";
+		}
+		
 		int code = re.getCode();
 		int emailCode = (int) h.getSession().getAttribute(SessionKey.REGISTER_CODE);
 		String sessionEmail = (String) h.getSession().getAttribute(SessionKey.REGISTER_EMAIL);
@@ -48,7 +59,10 @@ public class RegisterController {
 		if(emailCode == code && reEmail.equals(sessionEmail)){
 			Integer uId = reg.register(re);
 			if(uId != null){
-				h.getSession().removeAttribute(SessionKey.IS_SUBMIT);
+				h.getSession().removeAttribute(SessionKey.IS_SUBMIT_REGISTER_REQUEST);
+				h.getSession().removeAttribute(SessionKey.IS_SUBMIT_LOGIN_REQUEST);
+				h.getSession().removeAttribute(SessionKey.IS_SUBMIT_CODE_REQUEST);
+				h.getSession().removeAttribute(SessionKey.CODE_LIFE);
 				h.getSession().setAttribute(SessionKey.USER_ID, uId);
 				return h.getContextPath();
 			}

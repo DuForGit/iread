@@ -63,8 +63,14 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/code"/>
+			<mvc:mapping path="/changecode"/>
+			<bean class="com.iread.font.mvc.interceptor.CodeInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
 			<mvc:mapping path="/setpass"/>
-			<mvc:mapping path="/postUser"/>
+			<!-- <mvc:mapping path="/postUser"/> -->
 			<bean class="com.iread.font.mvc.interceptor.ReSubmitIntercepter"/>
 		</mvc:interceptor>
 		

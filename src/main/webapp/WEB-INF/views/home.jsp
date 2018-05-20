@@ -66,16 +66,19 @@ text-align: center;
  </ul>
 <div class="carousel-inner">
 <div class="item active">
-<img alt="你的人生終將閃耀" src="resources/imgs/caro/1509950504291.jpg" />
- 
+<a href="${ctp}/ebook?id=${actions[0].bookId}" target="_blank">
+<img src="http://localhost:8080/iAdmin/images/action/${actions[0].cover}" style="height: 350px;width: 100%"/>
+</a>
 </div>
 <div class="item">
-<img alt="微笑向往，安之若素" src="resources/imgs/caro/1509951313802.jpg" /> 
-<!-- <div class="carousel-caption">微笑向往，安之若素</div> -->
+<a href="${ctp}/ebook?id=${actions[1].bookId}" target="_blank">
+<img src="http://localhost:8080/iAdmin/images/action/${actions[1].cover}"  style="height: 350px;width: 100%"/> 
+</a>
 </div>
 <div class="item">
-<img alt="新書推薦" src="resources/imgs/caro/1509951848823.jpg" />
-<!-- <div class="carousel-caption">新書推薦</div> -->
+<a href="${ctp}/ebook?id=${actions[2].bookId}" target="_blank">
+<img src="http://localhost:8080/iAdmin/images/action/${actions[2].cover}"  style="height: 350px;width: 100%"/>
+ </a>
  </div>
 </div>
 <a class="carousel-control left" href="#caro" 
@@ -90,11 +93,13 @@ text-align: center;
 
 <div id="hot" class="row">
 <h1>热门推荐</h1>
+
+<c:if test="${not empty hots}">
 <c:forEach items="${hots}" var="bk">
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
@@ -107,6 +112,8 @@ text-align: center;
 		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
 	</a>
 </c:forEach>	
+</c:if>
+
 </div>
 <div id="new" class="row">
 	<h1>新书推荐</h1>
@@ -114,7 +121,7 @@ text-align: center;
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
@@ -130,13 +137,13 @@ text-align: center;
 </div>
 
 <c:if test="${not empty bookcase}">
-<div id="bookscase" class="row">
+
 	<h1>根据你的书架为你推荐以下图书</h1>
 	<c:forEach items="${bookcase}" var="bk">
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
@@ -149,7 +156,7 @@ text-align: center;
 		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
 	</a>
 </c:forEach>
-</div>
+
 </c:if>
 
 <c:if test="${not empty cartbook}">
@@ -159,14 +166,14 @@ text-align: center;
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
 				<li class="book_name_mob">${bk.title}</li>
 				<li class="writer_mob">作者: ${bk.writer.name}</li>
 				<li class="price_mob">价格:${bk.price}</li>
-				</ul>
+			</ul>
 			</div>
 		</div>
 		<div class="row hidden-xs hidden-sm book_name"><span>${bk.title}</span></div>
@@ -183,7 +190,7 @@ text-align: center;
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">
@@ -206,7 +213,7 @@ text-align: center;
 	<a class="col-lg-2 col-md-2" href="${ctp}/ebook?id=${bk.id}" target="_blank">
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<img src="${ctp}/resources/imgs/books/${bk.cover}" class="img-responsive"/>
+				<img src="http://localhost:8080/iAdmin/images/book/${bk.cover}" class="img-responsive"/>
 			</div>
 			<div class="hidden-lg hidden-md col-xs-8 col-sm-8">
 			<ul class="list-unstyled">

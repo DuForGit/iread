@@ -1,6 +1,9 @@
 package com.iread.font.service;
 
+import java.util.List;
 import java.util.Map;
+
+import com.iread.beans.domain.BookInAction;
 
 /**
  *项目名称: iread
@@ -28,4 +31,6 @@ public interface BookService {
 	//3.查询上一个目录和下一个目录
 	Map<String, Object> text(int uid,int tid,int bid);
 	Map<String, Object> text(int tid,int bid);
+	
+	List<BookInAction> getBooksInAction();
 }

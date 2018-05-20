@@ -36,6 +36,23 @@ public class RegisterInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if(request.getSession().getAttribute(SessionKey.IS_SUBMIT_REGISTER_REQUEST) == null){
+			System.out.println("SessionKey.IS_SUBMIT_REGISTER_REQUEST为空");
+			response.sendRedirect("/reg");
+			return false;
+		}
+		
+		
+
+			int reg = (int)request.getSession().getAttribute(SessionKey.IS_SUBMIT_REGISTER_REQUEST);//提交注册次数，防止重复提交
+			if(reg > 0){
+				System.out.println("注册信息重复提交" );
+				response.sendRedirect("/reg");
+				return false;
+			}
+			request.getSession().setAttribute(SessionKey.IS_SUBMIT_REGISTER_REQUEST, reg + 1);
+
+		
 		if(request.getSession().getAttribute(SessionKey.USER_ID) == null){
 			String email =request.getParameter("email");
 			String name = request.getParameter("name");
@@ -50,6 +67,7 @@ public class RegisterInterceptor implements HandlerInterceptor{
 			}
 		}
 		System.out.println("正则表达式错误");
+		response.sendRedirect("/reg");
 		return false;
 		
 	}

@@ -1,10 +1,12 @@
 package com.iread.font.dao;
 
+import java.util.Date;
 import java.util.List;
 
 
 import org.apache.ibatis.annotations.Param;
 
+import com.iread.beans.domain.AlipayOrder;
 import com.iread.beans.domain.Book;
 import com.iread.beans.domain.MyBookDo;
 import com.iread.beans.domain.Order;
@@ -51,6 +53,7 @@ public interface UserMapper {
 	//删除书架上的图书(mybooks),id表示mybooks上的主键
 	public void deleteMyBook(@Param("id") int id);
 	
+	
 	//加入书架
 	public Integer addMyBook(MyBookDo book);
 	
@@ -93,10 +96,15 @@ public interface UserMapper {
 	public Integer isBuyBook(@Param("bid")int bid,@Param("uid") int uid);
 	public void deleteCartBook(@Param("bid")int bid,@Param("uid") int uid);
 	public void addOne(@Param("id") int bid);
+	public Date getSoldout(@Param("bid") int bid);
+	public float isFree(@Param("bid")int bid);
+	public Integer hasOrder(@Param("bid")int bid,@Param("uid")int uid);
 	
 	//添加订单
 	public Float getPrice(@Param("bid")int bid);
-	public void addOrder(@Param("bid")int bid,@Param("uid") int uid,@Param("price")float price);
+	public void addOrder(@Param("bid")int bid,
+			@Param("uid") int uid,
+			@Param("price")float price,@Param("orderId") String orderId,@Param("payId") String payId);
 	
 	
 	/**个性化推荐*/
@@ -117,7 +125,7 @@ public interface UserMapper {
 	//随机获取订单的bookID集合
 	List<Integer> getMyOrderBookIds(@Param("uid")int uid);
 	
-	
+	AlipayOrder getAlipayOrder(@Param("bid") int bid);
 	
 	
 	//获取系统消息(system_news-reading)

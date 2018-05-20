@@ -25,6 +25,7 @@ function etext(tid){
 <body>
 <%-- <c:out value="bookID：${infos.bookId}"/> --%>
 <div class="list_content fn-clear">
+<c:if test="${infos.soldout or infos.buy}">
   <div class="list_left">
     <!-- <div class="show_bookname">《山海经》</div> -->
     <div class="show_category">
@@ -46,7 +47,7 @@ function etext(tid){
     </div>
     <div id="etext">
     <div class="showbox">
-    	<c:out value="${infos.text.text }"></c:out>
+    	<c:out value="${infos.text.text }" escapeXml="false"></c:out>
     </div>
     <!-- <div class="prevnext">
       <div class="prev">上一卷：<a href="#">第一卷</a></div>
@@ -64,6 +65,23 @@ function etext(tid){
       </script>
     </div> -->
   </div>
+  </c:if>
+  
+  
+  <c:if test="${!infos.soldout and !infos.buy}">
+
+  <div class="list_right">
+    <div class="position fn-clear">
+      <em><a href="${ctp}/">点击此处前往首页</a></em>
+    </div>
+    <div class="chapterbox">
+		<h3 style="text-align: center; font-size: 36px">本书已下架，无法阅读</h3>
+    </div>
+  </div>
+</c:if>
+  
 </div>
+
+
 </body>
 </html>

@@ -16,7 +16,7 @@ public class RegexUtil {
 	//名字
 	public static final String REGEX_NAME = "^[a-z0-9A-Z\u4e00-\u9fa5]+$";
 	//密码
-	public static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{6,20}$";
+	public static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{32}$";//^[a-zA-Z0-9]{6,20}$
 	//验证码
 	public static final String REGEX_CODE = "^[0-9]{6}$";
 }

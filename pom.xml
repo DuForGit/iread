@@ -213,6 +213,25 @@
 	    <artifactId>pagehelper</artifactId>
 	    <version>5.1.2</version>
 	</dependency>
+	
+<!-- https://mvnrepository.com/artifact/com.github.1991wangliang/alipay-sdk -->
+<dependency>
+    <groupId>com.github.1991wangliang</groupId>
+    <artifactId>alipay-sdk</artifactId>
+    <version>1.0.0</version>
+</dependency>
+
+	
+	
+	
+	<!-- https://mvnrepository.com/artifact/com.pentahohub.nexus/alipay-sdk-java -->
+<!-- <dependency>
+    <groupId>com.pentahohub.nexus</groupId>
+    <artifactId>alipay-sdk-java</artifactId>
+    <version>20150820220052</version>
+</dependency> -->
+
+	
 		
 		
 <!-- 		https://mvnrepository.com/artifact/org.apache.commons/commons-email

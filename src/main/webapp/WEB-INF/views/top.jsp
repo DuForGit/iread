@@ -43,11 +43,11 @@ border-color: #fff;
 width:10%;
 }
 
-#cata > a:first-child{
+/* #cata > a:first-child{
 border-color: #4CAF50;
-background-color:#4CAF50;
+background-color:#4CAF50; 
 color:#fff;
-}
+} */
 a{
 text-align: center;
 }
@@ -128,7 +128,7 @@ function show(data){
 			+"<div class='col-lg-9 col-md-9'>"
 			+"<div class='row'>"
 			+"<div  class='col-lg-2 col-md-2' id='bimg'>"
-			+"<img src='${ctp}/resources/imgs/books/"+book.cover+"' class='img-responsive img-rounded' /></div>"
+			+"<img src='http://localhost:8080/iAdmin/images/book/"+book.cover+"' class='img-responsive img-rounded' /></div>"
 			+"<div  class='col-lg-10 col-md-10' id='binfos'>"
 			+"<div class='row'><span class='stitle'>"+book.title+"</span><span class='color'>("+book.publish.name+")</span></div>"
 			+"<div class='row stars'>";
@@ -136,7 +136,9 @@ function show(data){
 			for(var j=0;(j<book.grade) && (book.grade > 0);j++){
 				bhtml += "<span class='glyphicon glyphicon-star'></span>";
 			}
-			bhtml += "<span class='color'>  "+book.grade+"</span><span class='color'>   |   </span><span class='color'>"+book.valuator+"</span></div>";
+			/*bhtml += "<span class='color'>  "+book.grade+"</span><span class='color'>   |   </span><span class='color'>"+book.valuator+"</span></div>";*/
+			bhtml += "</div>";
+
 			bhtml += "<div class='row summary'><span class='inf'>介绍  </span><span class='color'>"+book.summary+"</span></div>";
 			bhtml += "<div class='row'><span class='inf'>作者  </span><span class='color'>"+book.writer.name+"</span></div>";
 			bhtml += "<div class='row'><div class='col-lg-4 col-md-4 pull-left price'><b class='b'>￥</b><span>"+book.price
@@ -328,34 +330,34 @@ function lastPag(isLastPage,pages,pageNum){
  
  <c:if test="${not empty sessionScope.userId}">
 <font id="info_wrap" >
- <a type="button" class="btn btn-link" id="info" style="color:#000000">
+ <a type="button" class="btn btn-link" id="info" style="color:#000000" >
 <span id="username">个人信息</span> 
 <span id="sign">∨</span> 
  </a>
  <div id="info_list" class="dropdown-menu" style="display:none;">
- <li style="text-align: center;"><a href="${ctp}/my" >个人主页</a></li> 
+ <li style="text-align: center;"><a href="${ctp}/my" target="_blank">个人主页</a></li> 
  <li class="divider"></li>
- <li style="text-align: center;"><a href="${ctp}/myinfos">我的数据</a></li>
- <li class="divider"></li>
-  <li style="text-align: center;"><a href="${ctp}/mycart">购物车</a></li>
- <li class="divider"></li>
+<!--  <li style="text-align: center;"><a href="${ctp}/myinfos">我的数据</a></li>
+<li class="divider"></li>
+ <li style="text-align: center;"><a href="${ctp}/mycart">购物车</a></li>
+<li class="divider"></li> -->
   <li style="text-align: center;"><a href="${ctp}/quit">退出</a></li>
  <!--  <li class="divider"></li>
   <li style="text-align: center;"><a href="#">收藏</a></li> -->
  </div>
  </font>
- <span>|</span>
- <a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/set">设置</a>
+ <!-- <span>|</span>
+ <a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/set">设置</a> -->
  <span>|</span>
  </c:if>
  
  <c:if test="${empty sessionScope.userId}">
- <a type="button" class="btn btn-link"  data-toggle="modal"  data-target="#login" style="color:#000000">登录</a>
- <span>|</span>
-<a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/reg">注册</a>
+<!--  <a type="button" class="btn btn-link"  data-toggle="modal"  data-target="#login" style="color:#000000">登录</a>
+ <span>|</span> -->
+<a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/reg">登录 / 注册</a>
 <span>|</span>
 </c:if>
-<a type="button" class="btn btn-link" style="color:#000000" href="${ctp}/getpass">找回密码</a>
+<a type="button" target="_blank" class="btn btn-link" style="color:#000000" href="${ctp}/getpass">找回密码</a>
 
 
 <!-- <span>|</span>

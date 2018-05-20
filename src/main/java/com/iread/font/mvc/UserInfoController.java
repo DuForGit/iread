@@ -1,7 +1,8 @@
 package com.iread.font.mvc;
 
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alipay.api.AlipayApiException;
 import com.iread.beans.domain.MyBookDo;
 import com.iread.beans.domain.UserInfomations;
 import com.iread.font.service.UserService;
@@ -49,6 +52,7 @@ public class UserInfoController {
 	public String showMeInfos(HttpServletRequest request, Model model){
 		int userId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
 		model.addAttribute("info",user.getMyInfos(userId));
+		System.out.println("info:" + user.getMyInfos(userId));
 		return "myinfo";
 	}
 	
@@ -57,19 +61,22 @@ public class UserInfoController {
 	public String set(HttpServletRequest request, Model model){
 		int userId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
 		model.addAttribute(user.getMyInfos(userId));
+		//System.out.println("aboutme:" + user.getMyInfos(userId));
 		return "set";
 	}
 	//设置--设置设个人信息
 	@RequestMapping("/setinfo")
-	public String setInfo(HttpServletRequest request, UserInfomations infos){
+	public void setInfo(HttpServletRequest request, UserInfomations infos){
+		
 		user.setMyInfos(infos);
-		return "redirect:/myinfo";
+		//return "redirect:/myinfo";
 	}
 	//设置--重设个人信息
-	@RequestMapping("/reset")
-	public String reset(HttpServletRequest request, UserInfomations infos){
+	@RequestMapping(value="/reset",method=RequestMethod.POST)
+	public void reset(HttpServletRequest request, UserInfomations infos){
 		user.changeMyInfos(infos);
-		return "redirect:/myinfo";
+		System.out.println("infos :: " + infos);
+		//return "redirect:/myinfo";
 	}
 	
 	//购物车
@@ -88,11 +95,16 @@ public class UserInfoController {
 		return "redirect:/ebook?id="+id;
 		}
 	//ID为cart表ID
-	@RequestMapping("delcart")
+	/*@RequestMapping("delcart")
 	public String delMyCart(HttpServletRequest request, int id){
 		int userId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
 		user.moveBookFromMyCart(userId,id);
-		return "redirect:/my";}
+		return "redirect:/my";}*/
+	@RequestMapping(value="delcart",method=RequestMethod.POST)
+	public void delMyCart(HttpServletRequest request, int id){
+		int userId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
+		user.moveBookFromMyCart(userId,id);
+		}
 	
 	
 	//订单
@@ -122,20 +134,83 @@ public class UserInfoController {
 		return "redirect:/ebook?id="+id;
 	}
 	//删除书架上的数据，id为书架books表上的主键
-	@RequestMapping("/delmybook")
+	/*@RequestMapping("/delmybook")
 	public String deleteMyBook(HttpServletRequest request,int id){
 		int uId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
 		int myId = user.getMybookId(uId, id);
 		user.deleteMyBook(myId);
 		return "redirect:/my";
+	}*/
+	@RequestMapping(value="/delmybook",method=RequestMethod.POST)
+	public void deleteMyBook(HttpServletRequest request,int id){
+		int uId = (int) request.getSession().getAttribute(SessionKey.USER_ID);
+		int myId = user.getMybookId(uId, id);
+		user.deleteMyBook(myId);
 	}
 	
-	@RequestMapping("buy")
-	public String buyBook(HttpServletRequest request, int bid){
+	@RequestMapping(value="buy",method=RequestMethod.POST)
+	@ResponseBody
+	public int buyBook(HttpServletRequest request, int bid){
+		System.out.println("控制层：不用通过支付宝支付");
 		int uid = (int) request.getSession().getAttribute(SessionKey.USER_ID);
-		user.buyBook(bid, uid);
-		return "redirect:/ebook?id=" + bid;
+		int flag = user.buyBook(bid, uid);//购买状态
+		/*if(flag == 1){
+			return "redirect:/ebook?id=" + bid;
+		}else{
+			return null;
+		}*/
+		System.out.println("flag:" + flag);
+		return flag;
 	}
+	
+	@RequestMapping(value="ispay",method=RequestMethod.POST)
+	@ResponseBody
+	public String isPay(HttpServletRequest request, int bid){
+		int uid = (int) request.getSession().getAttribute(SessionKey.USER_ID);
+		boolean ispay= user.isPay(bid, uid);
+		if(ispay){
+			return "1";
+		}
+		else{
+			return "forward:pay";
+		}
+	}
+	
+	@RequestMapping(value="pay",method=RequestMethod.POST)
+	@ResponseBody
+	public void alipay(HttpServletRequest request, int bid,HttpServletResponse httpResponse) throws Exception{
+		System.out.println("控制层：支付宝支付");
+		int uid = (int) request.getSession().getAttribute(SessionKey.USER_ID);
+		String flag = user.alipay(bid, uid,request);
+		System.out.println("返回：" + flag);
+		
+		
+		httpResponse.setContentType("text/html;charset=utf-8");
+	    httpResponse.getWriter().write(flag);//直接将完整的表单html输出到页面
+	    httpResponse.getWriter().flush();
+	    httpResponse.getWriter().close();
+		
+		
+		//return flag;
+		
+	}
+	
+	@RequestMapping(value="return",method=RequestMethod.GET)
+	public String return_url(HttpServletRequest request){
+		boolean success = false;
+		try {
+			success = user.payReturnurl(request);
+		} catch (AlipayApiException e) {
+			e.printStackTrace();
+		}
+		if(success){
+			String out_trade_no = request.getParameter("out_trade_no");
+			int bid  = Integer.valueOf(out_trade_no.substring(out_trade_no.length()-6,out_trade_no.length()-1));
+			return "redirect:ebook?id=" + bid;
+		}
+		return "feedback";
+	}
+	
 	
 	//退出
 	@RequestMapping("/quit")
@@ -144,7 +219,10 @@ public class UserInfoController {
 		return "redirect:/index";
 	}
 	
-	
+	@RequestMapping("feedback")
+	public String feedback(){
+		return "feedback";
+	}
 	
 	
 	

@@ -56,13 +56,100 @@ border: thin 1px #666; */
 
 <script type="text/javascript">
 
+
+
+var writersInfos = null;
+var liststype = true;
+
+/* 将book数据进行展示 */
+function showWriterInfos(data){
+	var con = $("#writerslist");
+	var writers = data.list;//电子书表单列表
+	var writer;//包含电子书的内容
+	var len = writers.length;//数据长度
+	var bhtml = "";//列表HTML代码
+	
+	//展示分页栏
+	var total = data.total;//查询的总book数量；不是当前页面的总数，是根据条件查找到的数据库中的总数
+	var pageNum = data.pageNum; //当前页码
+	var pages = data.pages;//总页数
+	var pre = data.pre;//前一页页码
+	var next = data.next;//下一页页码
+	var isFirstPage = data.isFirstPage;//是否为第一页
+	var isLastPage = data.isLastPage;//是否为最后一页
+	var hasPreviousPage = data.hasPreviousPage;//是否有前一页
+	var hasNextPage = data.hasNextPage;//是否有后一页
+	
+	
+	var startPage = "<div class='row' id='page'><ul class='pagination'>";//关于分页按钮的HTML开始位置代码
+	var endPage = "</ul></div>";//关于分页按钮的HTML结束位置代码
+	var pa = "";//分页按钮的HTML代码
+	//var pagediv = $("#page");
+	
+//	if(data != null){alert(books);}
+	if(len > 0){
+		bhtml += "<span class='booksnum' style='color:#aaa; font-size:12px;'>共找到"+total+"位作家</span>";
+		for(var i = 0; i < len; i++){
+			writer = writers[i];
+			var avgsales = 0;
+			if(writer.sales != undefined && writer.sales != null){avgsales = writer.sales;}
+			var  read = 0;
+			if(writer.readers != undefined && writer.readers != null){read = writer.readers}
+			bhtml += "<div class='row search' >"
+			+"<div class='col-lg-9 col-md-9'>"
+			+"<div class='row'>"
+			+"<div  class='col-lg-2 col-md-2' id='bimg'>"
+			+"<img height='20' src='http://localhost:8080/iAdmin/images/publish/"+writer.cover+"' class='img-responsive img-rounded' /></div>"
+			+"<div  class='col-lg-10 col-md-10' id='binfos'>"
+			+"<div class='row'><span class='stitle'>"+writer.name+"</span></div>"
+			+"<div class='row stars'>";
+			
+			for(var j=0;(j<writer.grade) && (writer.grade > 0);j++){
+				bhtml += "<span class='glyphicon glyphicon-star'></span>";
+			}
+			/*bhtml += "<span class='color'>  "+book.grade+"</span><span class='color'>   |   </span><span class='color'>"+book.valuator+"</span></div>";*/
+			bhtml += "</div>";
+
+			bhtml += "<div class='row summary'><span class='inf'>介绍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class='color'>"+writer.summary+"</span></div>";
+			bhtml += "<div class='row'><span class='inf'>阅读量&nbsp;&nbsp;&nbsp;</span>"+read+"</div>";
+			bhtml += "<div class='row'><span class='inf'>销售量&nbsp;&nbsp;&nbsp;</span><span>"+parseInt(avgsales)
+			+"</span><div class='col-lg-2 col-md-2 pull-right'><a class='btn btn-success btn-xs' href='${ctp}/publishs/bookofpub?id="+writer.id+"' target='_blank'>了解更多...</a></div></div></div></div></div><div class='col-lg-3 col-md-3'></div></div>";
+			if(len > 1){bhtml += "<hr>";}
+		}
+	}
+	
+	
+	if(total > 0 && pages > 1){
+		pa = startPage
+			+ firstPage(isFirstPage,pageNum)
+			+ prePage(hasPreviousPage,pre)
+			+ NumPage(pageNum, pages)
+			+ nextPage(hasNextPage,next)
+			+ lastPage(isLastPage,pages,pageNum)
+			+ endPage;
+			
+	}
+ 	var pagediv = $("#page");
+	con.html(bhtml);
+	pagediv.html(pa);
+}
+
+
+
+
+
+
+
+
+
+
 	//展示列表和分页
 	function writershow(data){
 		//展示作者列表
 		var wlist = $("#writerslist");
 		var size = data.list.length;//列表数量
 		var writersL = data.list;//作家列表
-		var row;//表示一行 
+		var row = "";//表示一行 
 		var colsize=0;//用于标识row中包含writer列表的个数,一行有4个数据
 		var writer;
 		var i = 0;
@@ -73,18 +160,18 @@ border: thin 1px #666; */
 				colsize = i%4;
 				writer = writersL[i];
 				if(colsize == 0){
-					row="<div class='row writerslist'>";
+					row= row  + "<div class='row writerslist'>";
 				}
 				var readernum = 0;
 				var saless = 0;
 				if(writer.sales != undefined && writer.sales != null){readernum = writer.sales;}
 				if(writer.readers != undefined && writer.readers != null){saless = writer.readers;}
-				row = row + "<div class='col-lg-3 col-sm-3' ><div class='infos_div'><div class='row'>"+
-						"<a target='_blank' href='${ctp}/publishs/bookofpub?id="+writer.id+"'><img style='cursor:pointer' src='${ctp}/resources/imgs/publishs/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12 pubimg'></a></div><div class='row w_name'>"+writer.name+"</div><div class='winfos row'>" + 
+				row = row + "<div class='col-lg-3 col-sm-3'><div class='infos_div'><div class='row'style='background:#fff;border:#e8e8e5 1px'>"+
+						"<a target='_blank' href='${ctp}/publishs/bookofpub?id="+writer.id+"'><img style='cursor:pointer;height:120px;' src='http://localhost:8080/iAdmin/images/publish/"+writer.cover+"' class='img-responsive col-lg-12 col-sm-12 pubimg'></a></div><div class='row w_name'>"+writer.name+"</div><div class='winfos row'>" + 
 						"<span class='col-lg-1 col-sm-1'></span><span class='wname col-lg-4 col-sm-4'>销量: "
 						+ readernum +"</span><span class='col-lg-2 col-sm-2'></span><span class='wname col-lg-4 col-sm-4'>阅读量: "+saless+"</span></div></div></div>";
-				if(colsize == 4){
-					row = row + "</div>";
+				if(colsize == 3){
+					row = row + "</div><hr>";
 				}
 			}
 			
@@ -179,7 +266,12 @@ border: thin 1px #666; */
 	function getDataByURL(url){
 		if(url != null){
 			$.getJSON(url, function(data){
-				writershow(data);
+				writersInfos = data;
+				if(liststype){
+					writershow(data);
+				}else{
+					showWriterInfos(data);
+				}
 			});
 		}else{
 			 window.location.reload();
@@ -250,7 +342,12 @@ border: thin 1px #666; */
 	
 	function listWriters(){
 		$.getJSON("${ctp}/publishs/list",function(data){
-			writershow(data);
+			writersInfos = data;
+			if(liststype){
+				writershow(data);
+			}else{
+				showWriterInfos(data);
+			}
 		});
 	}
 	
@@ -268,6 +365,16 @@ border: thin 1px #666; */
 		}else{getDataByURL(orderWriters(5,1));gender = true;}
 	}
 
+	function changeshowstyle(bool){
+		if(bool == true){
+			liststype = true;
+			writershow(writersInfos);
+			}else{
+				liststype = false;
+				showWriterInfos(writersInfos);
+			}
+	}
+	
 	$(document).ready(function(){
 		listWriters();
 	});
@@ -303,8 +410,8 @@ border: thin 1px #666; */
 				
 			</div>
 			<div id="wshow" class="col-sm-2 col-lg-2 pull-right btn-group btn-group-lg">
-				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
-				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></button>
+				<button type="button" class="btn btn-default" onclick="changeshowstyle(true);"><span class="glyphicon glyphicon-th-large"></span></button>
+				<button type="button" class="btn btn-default" onclick="changeshowstyle(false);"><span class="glyphicon glyphicon-th-list"></span></button>
 			</div>
 		</div>
 	

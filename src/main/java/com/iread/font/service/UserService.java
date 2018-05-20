@@ -4,6 +4,9 @@ import java.util.List;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.alipay.api.AlipayApiException;
 import com.iread.beans.domain.AIIAboutMe;
 import com.iread.beans.domain.MyBookDo;
 import com.iread.beans.domain.Order;
@@ -31,5 +34,8 @@ public interface UserService {
 	public void addMyBook(MyBookDo book);//添加图书到书架
 	public void deleteMyBook(int id); //删除书架上的图书（mybooks 主键）
 	public int getMybookId(int uId,int bId);//根据用户ID和图书ID找书架对应的主键
-	public void buyBook(int bid,int uid);//购买
+	public int buyBook(int bid,int uid);//购买
+	String alipay(int bid,int uid,HttpServletRequest request) throws Exception;//购买（支付宝）
+	boolean isPay(int bid,int uid);
+	boolean payReturnurl(HttpServletRequest request) throws AlipayApiException;
 }
